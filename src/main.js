@@ -1,8 +1,20 @@
 import Vue from 'vue'
 import App from './App.vue'
+import router from './router/index'
+import axios from './utils/axios'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
-Vue.config.productionTip = false
+// 公共样式
+import "@/assets/style/base.css";
+
+
+Vue.config.productionTip = false;
+Vue.use(axios);
+Vue.use(ElementUI);
+
 
 new Vue({
   render: h => h(App),
+  router,
 }).$mount('#app')

@@ -1,0 +1,53 @@
+/* 初始化 */
+blockquote,
+body,
+button,
+dd,
+dl,
+dt,
+fieldset,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+input,
+legend,
+li,
+ol,
+p,
+pre,
+td,
+textarea,
+th,
+ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+}
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+/* 设置网页个性化样式 */
+a {
+  font-size: 15px;
+  color: #666;
+  line-height: 16px;
+}
+a:hover {
+  color: #181818;
+  font-weight: bold;
+}
+input {
+  outline: none;
+}
