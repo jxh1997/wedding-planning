@@ -56,7 +56,7 @@ export default {
         { cn: "套餐选择", en: "CHOICE", link: "/choice" },
         { cn: "婚礼类型", en: "TYPE", link: "/type" },
         { cn: "婚纱礼服", en: "DRESS", link: "/dress" },
-        { cn: "婚纱摄影", en: "GRSPHY", link: "/photography" },
+        { cn: "婚纱摄影", en: "GRSPHY", link: "/graphy" },
         { cn: "个人中心", en: "PERSONAL", link: "/personal" },
       ]),
     };

@@ -8,7 +8,7 @@
 
       <!-- 婚礼类型  手风琴效果: 每次只能展开一个面板 -->
       <div class="type-content">
-        <el-collapse v-model="activeName" accordion v-for="tp in type" >
+        <el-collapse v-model="activeName" accordion v-for="tp in type" v-bind:key="index" >
           <el-collapse-item :title="tp.title" :name="tp.t_id">
             <div>{{tp.desc}}</div>
             <div>{{tp.content}}</div>
@@ -77,7 +77,6 @@ export default {
 </script>
 
 <style>
-/***************** 婚礼资讯**************** */
 .newswed {
   width: 100%;
   background-color: #f3f3f3;
