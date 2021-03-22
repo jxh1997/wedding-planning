@@ -7,7 +7,11 @@
       </el-carousel-item>
     </el-carousel>
 
+    <!-- 套餐选择 -->
     <wMenu></wMenu>
+
+    <!-- 婚礼类型 -->
+    <wType></wType>
 
   </div>
 </template>
@@ -15,10 +19,13 @@
 <script>
 
 import wMenu from "@/components/MenuComponet/Menu";
+import wType from "@/components/TypeComponet/Type";
+
 
 export default {
     components: {
-      wMenu
+      wMenu,
+      wType
     },
 
   data() {

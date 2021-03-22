@@ -6,6 +6,8 @@ import Home from "@/components/IndexComponet/Home";
 import Signin from "@/components/SigninComponet/Signin";
 import Signup from "@/components/SignupComponet/Signup";
 import Menu from "@/components/MenuComponet/Menu";
+import Type from "@/components/TypeComponet/Type";
+
 
 Vue.use(Router);
 
@@ -30,6 +32,10 @@ export default new Router({
     {
       path: "/choice",
       component: Menu
+    },
+    {
+      path: "/type",
+      component: Type
     }
   ]
 });
