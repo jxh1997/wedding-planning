@@ -9,6 +9,7 @@
       <!--标题-->
       <div class="title">
         <div class="main-title">Wedding Dress</div>
+        <div class="main-title-2">婚纱礼服</div>
       </div>
     </div>
 
@@ -101,6 +102,14 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-family: "华文隶书";
+}
+.main-title-2 {
+  position: absolute;
+  left: 50%;
+  top: 60%;
   transform: translate(-50%, -50%);
   font-size: 40px;
   font-family: "华文隶书";

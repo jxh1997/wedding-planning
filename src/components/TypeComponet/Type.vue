@@ -151,18 +151,31 @@ export default {
     // 查询表单内容
     onSubmit() {
       this.resultType = [];
-      console.log("submit!" , this.formInline.type, this.formInline.price);
+      let result = [];
+      let formInlineType = this.formInline.type;
+      let formInlinePrice = this.formInline.price;
       for (var i = 0; i < this.type.length; i++) {
-          if (this.type[i].type.indexOf(this.formInline.type) >= 0) {
-            this.resultType.push(this.type[i])
+          if (this.type[i].type.indexOf(formInlineType) >= 0) {
+            result.push(this.type[i])
           }
       }
+
+      
+      result.sort(function(a,b) {
+        if(formInlinePrice == 'asc') {
+          // 升序：由低到高
+          return a.price - b.price
+        } else {
+          // 降序：由高到低
+          return b.price - a.price
+        }
+      })
+
+      this.resultType = result;
     },
 
     // 折叠面板展开内容
-    handleChange(val) {
-      console.log(val);
-    }
+    handleChange() {}
   },
 };
 </script>
