@@ -13,6 +13,12 @@
     <!-- 婚礼类型 -->
     <wType></wType>
 
+    <!-- 婚礼礼服 -->
+    <wDress></wDress>
+
+    <!-- 婚纱摄影 -->
+    <wGraphy></wGraphy>
+
   </div>
 </template>
 
@@ -20,12 +26,16 @@
 
 import wMenu from "@/components/MenuComponet/Menu";
 import wType from "@/components/TypeComponet/Type";
+import wDress from "@/components/DressComponet/Dress";
+import wGraphy from "@/components/GraphyComponet/Graphy";
 
 
 export default {
     components: {
       wMenu,
-      wType
+      wType,
+      wDress,
+      wGraphy
     },
 
   data() {

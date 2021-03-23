@@ -14,13 +14,14 @@
             :to="item.link"
             class="a_list"
             :key="index"
-            v-for="(item, index) of content"
+            v-for="(item,index) of content"
             :title="item.cn"
           >
-            <span class="cn">{{ item.cn }}</span>
-            <span class="en">{{ item.en }}</span>
+            <span class="cn">{{item.cn}}</span>
+            <span class="en">{{item.en}}</span>
           </router-link>
         </div>
+        
         <!-- 登录注册 -->
         <div class="h_tel">
           <a>登录</a> |
@@ -46,9 +47,7 @@
 </template>
 
 <script>
-
 export default {
-  
   data() {
     return {
       content: Object.freeze([
@@ -60,7 +59,7 @@ export default {
         { cn: "个人中心", en: "PERSONAL", link: "/personal" },
       ]),
     };
-  },
+  }
 };
 </script>
 
@@ -79,10 +78,6 @@ export default {
   width: 125px;
   height: 50px;
 }
-.h_logo a img {
-  width: 100%;
-  height: 100%;
-}
 .h_menu {
   width: 800px;
   height: 50px;
@@ -94,9 +89,6 @@ export default {
   height: 50px;
   font-size: 14px;
   line-height: 50px;
-}
-.h_tel a {
-  text-decoration: none;
 }
 .a_list {
   width: 80px;
