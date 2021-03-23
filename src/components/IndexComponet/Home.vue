@@ -41,10 +41,10 @@ export default {
   data() {
     return {
       images: [
-        'https://img01.yzcdn.cn/vant/apple-1.jpg',
-        'https://img01.yzcdn.cn/vant/apple-2.jpg',
-        'https://img01.yzcdn.cn/vant/apple-3.jpg',
-        'https://img01.yzcdn.cn/vant/apple-4.jpg',
+        'https://img-blog.csdnimg.cn/20210323155637534.jpg',
+        'https://img-blog.csdnimg.cn/20210323155652593.jpg',
+        'https://img-blog.csdnimg.cn/20210323155702425.jpg',
+        'https://img-blog.csdnimg.cn/2021032315570893.jpg',
       ]
     }
   },
