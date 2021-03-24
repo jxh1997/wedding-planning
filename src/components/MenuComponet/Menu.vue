@@ -29,7 +29,7 @@ export default {
         {
           w_id: 1,
           img: [
-            'https://img-blog.csdnimg.cn/2021032416152429.jpg'
+            require('../../assets/images/wednews/news1.jpg')
           ],
           title: '伦敦时装周春夏| 2019 ...',
           time: 'TIME:2018/10/20',
@@ -39,7 +39,7 @@ export default {
         {
           w_id: 2,
           img: [
-            'https://img-blog.csdnimg.cn/2021032416152422.jpg'
+             require('../../assets/images/wednews/news2.jpg')
           ],
           title: '婚礼颜色搭配法则 | 流...',
           time: 'TIME:2018/10/22',
@@ -49,7 +49,7 @@ export default {
         {
           w_id: 3,
           img: [
-            'https://img-blog.csdnimg.cn/20210324161523977.jpg'
+             require('../../assets/images/wednews/news3.jpg')
           ],
           title: '视帝陈展鹏大婚 | 新娘...',
           time: 'TIME:2018/10/24',
@@ -59,7 +59,7 @@ export default {
         {
           w_id: 4,
           img: [
-            'https://img-blog.csdnimg.cn/20210324161523967.jpg'
+             require('../../assets/images/wednews/news4.jpg')
           ],
           title: '心动的信号 | 即将收官...',
           time: 'TIME:2018/10/23',
