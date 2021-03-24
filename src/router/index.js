@@ -10,7 +10,7 @@ import Type from "@/components/TypeComponet/Type";
 import Dress from "@/components/DressComponet/Dress";
 import Graphy from "@/components/GraphyComponet/Graphy";
 import Personal from "@/components/PersonalComponet/Personal";
-// import Details from "@/components/DetailsComponet/Details";
+import Details from "@/components/DetailsComponet/Details";
 
 
 Vue.use(Router);
@@ -42,6 +42,13 @@ export default new Router({
     {
       path: "/choice",
       component: Menu,
+      meta: {
+        isAuthRequired: true   // 是否需要登录
+      },
+    },
+    {
+      path: "/choice/details",
+      component: Details,
       meta: {
         isAuthRequired: true   // 是否需要登录
       },
