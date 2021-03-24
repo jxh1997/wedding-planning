@@ -14,18 +14,26 @@
             :to="item.link"
             class="a_list"
             :key="index"
-            v-for="(item,index) of content"
+            v-for="(item, index) of content"
             :title="item.cn"
           >
-            <span class="cn">{{item.cn}}</span>
-            <span class="en">{{item.en}}</span>
+            <span class="cn">{{ item.cn }}</span>
+            <span class="en">{{ item.en }}</span>
           </router-link>
         </div>
-        
         <!-- 登录注册 -->
-        <div class="h_tel">
-          <a>登录</a> |
-          <a>注册</a>
+        <div class="h_tel" v-if="$store.state.isLogin === false">
+          <a href="/#/signin" class="dl">登录</a> |
+          <a href="/#/signup" class="dl">注册</a>
+        </div>
+        <div class="h_tel" v-else>
+          欢迎
+          <i class="el-icon-user"></i>
+          <span class="username">
+            {{ $store.state.user.username }}
+          </span>
+          |
+          <a href="/#/signin" @click="handleRemove" class="tc">退出</a>
         </div>
 
         <!-- 自动播放音乐 -->
@@ -59,7 +67,16 @@ export default {
         { cn: "个人中心", en: "PERSONAL", link: "/personal" },
       ]),
     };
+  },
+
+  methods: {
+    handleRemove() {
+      this.$store.dispatch('removeUser');
+      
+    },
   }
+
+  
 };
 </script>
 
@@ -85,10 +102,22 @@ export default {
   line-height: 50px;
 }
 .h_tel {
-  width: 165px;
+  width: 230px;
   height: 50px;
   font-size: 14px;
   line-height: 50px;
+  display: flex;
+  align-items: center;
+}
+.tc {
+  margin-left: 10px;
+}
+.username {
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  margin: 0 5px;
 }
 .a_list {
   width: 80px;
@@ -103,24 +132,27 @@ export default {
   color: #333;
 }
 
-.header .h_menu .a_list .cn {
+.cn {
   width: 60px;
   height: 50px;
 }
-.header .h_menu .a_list .en {
+.en {
   width: 60px;
   height: 50px;
 }
-
-.header .h_menu .a_list:hover {
+.dl {
+  margin: 5px;
+}
+.a_list:hover {
   transform: translate(0, -50px);
   overflow: visible;
 }
 
-.header .h_menu .a_list:hover .en {
+.a_list:hover .en {
   border-bottom: 5px solid #000;
   height: 45;
   text-decoration: none;
   color: #333;
 }
+
 </style>

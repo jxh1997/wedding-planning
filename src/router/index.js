@@ -10,6 +10,8 @@ import Type from "@/components/TypeComponet/Type";
 import Dress from "@/components/DressComponet/Dress";
 import Graphy from "@/components/GraphyComponet/Graphy";
 import Personal from "@/components/PersonalComponet/Personal";
+// import Details from "@/components/DetailsComponet/Details";
+
 
 Vue.use(Router);
 
@@ -17,15 +19,21 @@ export default new Router({
   routes: [
     {
       path: "/",
-      component: Home
+      redirect: "/home"
     },
     {
-        path: "/Signin",
-        component: Signin
+      path: "/signin",
+      component: Signin,
+      meta:{
+        showNav: false   // 是否显示header和footer
+      }
     },
     {
-        path: "/signup",
-        component: Signup
+      path: "/signup",
+      component: Signup,
+      meta:{
+        showNav: false  
+      }
     },
     {
       path: "/home",
@@ -33,7 +41,10 @@ export default new Router({
     },
     {
       path: "/choice",
-      component: Menu
+      component: Menu,
+      meta: {
+        isAuthRequired: true   // 是否需要登录
+      },
     },
     {
       path: "/type",
@@ -49,7 +60,10 @@ export default new Router({
     },
     {
       path: "/personal",
-      component: Personal
+      component: Personal,
+      meta: {
+        isAuthRequired: true   // 是否需要登录
+      },
     }
   ]
 });

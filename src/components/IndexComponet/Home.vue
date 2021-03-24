@@ -10,9 +10,6 @@
     <!-- 套餐选择 -->
     <wMenu></wMenu>
 
-    <!-- 婚礼类型 -->
-    <wType></wType>
-
     <!-- 婚礼礼服 -->
     <wDress></wDress>
 
@@ -25,7 +22,6 @@
 <script>
 
 import wMenu from "@/components/MenuComponet/Menu";
-import wType from "@/components/TypeComponet/Type";
 import wDress from "@/components/DressComponet/Dress";
 import wGraphy from "@/components/GraphyComponet/Graphy";
 
@@ -33,7 +29,6 @@ import wGraphy from "@/components/GraphyComponet/Graphy";
 export default {
     components: {
       wMenu,
-      wType,
       wDress,
       wGraphy
     },
