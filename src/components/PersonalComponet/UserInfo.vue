@@ -21,7 +21,7 @@ export default {
     return {
       userInfo: {
         head: require("@/assets/images/blog-writer.png"),
-        name: "John Doe",
+        name: this.$store.state.user.username,
         uid: "10000",
       },
     };
