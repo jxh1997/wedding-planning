@@ -64,7 +64,7 @@ export default {
         { cn: "婚礼类型", en: "TYPE", link: "/type" },
         { cn: "婚纱礼服", en: "DRESS", link: "/dress" },
         { cn: "婚纱摄影", en: "GRSPHY", link: "/graphy" },
-        { cn: "个人中心", en: "PERSONAL", link: "/personal" },
+        { cn: "个人中心", en: "PERSONAL", link: "/personal/information" },
       ]),
     };
   },

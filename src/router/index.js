@@ -11,6 +11,10 @@ import Dress from "@/components/DressComponet/Dress";
 import Graphy from "@/components/GraphyComponet/Graphy";
 import Personal from "@/components/PersonalComponet/Personal";
 import Details from "@/components/DetailsComponet/Details";
+import Information from "@/components/PersonalComponet/MenuContent/Information";
+import Collection from "@/components/PersonalComponet/MenuContent/Collection";
+import Yuyue from "@/components/PersonalComponet/MenuContent/Yuyue";
+
 
 
 Vue.use(Router);
@@ -71,6 +75,20 @@ export default new Router({
       meta: {
         isAuthRequired: true   // 是否需要登录
       },
+      children: [
+        {
+          path: "/personal/information",
+          component: Information,
+        },
+        {
+          path: "/personal/collection",
+          component: Collection,
+        },
+        {
+          path: "/personal/yuyue",
+          component: Yuyue,
+        }
+      ]
     }
   ]
 });
