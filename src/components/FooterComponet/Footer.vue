@@ -29,7 +29,7 @@
 export default {
   data() {
     return {};
-  }
+  },
 };
 </script>
 
@@ -77,6 +77,7 @@ export default {
   color: #fff;
   margin: 0 5px;
   font-size: 12px;
+  text-decoration: none;
 }
 .f_link a:hover {
   color: #9c9c9c;

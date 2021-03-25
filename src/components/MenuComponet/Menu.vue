@@ -18,11 +18,20 @@
         </li>
       </ul>
     </div>
+    <!-- 只在当前页显示 -->
+    <div v-if="this.$route.path == '/choice'">
+      <Yuyue></Yuyue>
+    </div>
   </div>
 </template>
 
 <script>
+import Yuyue from '@/components/YuyueComponet/Yuyue';
 export default {
+  components: {
+    Yuyue,
+  },
+
   data() {
     return {
       weddingContent: [

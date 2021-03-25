@@ -21,8 +21,7 @@
 </template>
 
 <script>
-import Tab from './tabList.vue'
-
+import Tab from "./tabList.vue";
 
 export default {
   data() {
@@ -166,20 +165,19 @@ export default {
   justify-content: center;
   margin: 10px auto;
 }
-.inside_web_menu a{
+.inside_web_menu a {
   font-size: 15px;
   padding: 0 8px;
-  color: #FFFFFF;
-  border-right: 1px solid #FFFFFF;
+  color: #ffffff;
+  border-right: 1px solid #ffffff;
   line-height: 16px;
 }
 .inside_web_menu a:hover {
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: bold;
   text-decoration: none;
 }
-.page-area{
+.page-area {
   padding: 30px 0 50px;
 }
-
 </style>

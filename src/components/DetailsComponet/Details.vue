@@ -12,35 +12,28 @@
       </div>
 
       <div class="block">
-        <div class="blog-date">
-          <i class="el-icon-date"></i>
-          {{ dataShow.time }}
+        <div class="collection-img">
+          <img src="@/assets/images/icon/time.png" />
+          <span class="dataShow-span">{{ dataShow.time }}</span>
         </div>
+
         <!-- 评论数 -->
-        <div class="card-footer-share">
-          <i class="el-icon-chat-line-round"></i>
-          {{ dataShow.comments }}
+        <div class="collection-img">
+          <img src="@/assets/images/icon/comments.png" />
+          <span class="dataShow-span">{{ dataShow.comments }}</span>
         </div>
+
         <!-- 点赞数 -->
-        <div class="card-footer-share">
-          <i class="el-icon-thumb"></i>
-          {{ dataShow.fabulous }}
+        <div class="collection-img" @click="fabulous(id)">
+          <img src="@/assets/images/icon/fabulous.png" v-if="!isFabulous" />
+          <img src="@/assets/images/icon/fabulous_HL.png" v-else />
+          <span class="dataShow-span">{{ dataShow.fabulous }}</span>
         </div>
 
         <!-- 收藏 -->
         <div class="collection-img" @click="collection(id)">
-          <img
-            src="@/assets/images/Collection.png"
-            alt=""
-            srcset=""
-            v-if="isCollection"
-          />
-          <img
-            src="@/assets/images/Collection_HL.png"
-            alt=""
-            srcset=""
-            v-else
-          />
+          <img src="@/assets/images/icon/Collection.png" v-if="!isCollection" />
+          <img src="@/assets/images/icon/Collection_HL.png" v-else />
         </div>
       </div>
 
@@ -53,11 +46,16 @@
 
       <div class="text">
         <div class="text-img2">
-          <img class="img2" v-for="img in dataShow.img2" :src="img" />
+          <img
+            class="img2"
+            v-for="img in dataShow.img2"
+            :src="img"
+            :key="img"
+          />
         </div>
 
         <div class="text-content">
-          <p class="text2" v-for="text in dataShow.content">
+          <p class="text2" v-for="text in dataShow.content" :key="text">
             {{ text }}
           </p>
         </div>
@@ -116,7 +114,7 @@
               :rows="4"
               placeholder="请输入内容"
               v-model="ruleForm.comment"
-              class="el-input"
+              class="detail-el-input"
             >
             </el-input>
           </el-form-item>
@@ -198,6 +196,7 @@ export default {
         comment: [{ validator: validateComment, trigger: "blur" }],
       },
       isCollection: false, // 是否收藏
+      isFabulous: false, // 是否点赞
     };
   },
   methods: {
@@ -223,19 +222,40 @@ export default {
       this.$refs[formName].resetFields();
     },
 
+    // 点赞fabulous
+    fabulous(id) {
+      console.log(id);
+      this.isFabulous = !this.isFabulous;
+      if (!this.isFabulous) {
+        this.$message({
+          message: "取消点赞",
+          type: "success",
+          duration: 2000,
+        });
+      } else {
+        this.$message({
+          message: "点赞成功",
+          type: "success",
+          duration: 2000,
+        });
+      }
+    },
+
     // 收藏
     collection(id) {
       console.log(id);
       this.isCollection = !this.isCollection;
-      if (this.isCollection) {
+      if (!this.isCollection) {
         this.$message({
-          message: "取消收藏成功",
+          message: "取消收藏",
           type: "success",
+          duration: 2000,
         });
       } else {
         this.$message({
           message: "收藏成功",
           type: "success",
+          duration: 2000,
         });
       }
     },
@@ -280,6 +300,7 @@ export default {
   margin: 0 auto;
   margin-bottom: 30px;
 }
+
 .desc {
   display: flex;
   justify-content: flex-start;
@@ -325,12 +346,17 @@ export default {
 .collection-img {
   width: 30px;
   height: 30px;
+  display: flex;
+  margin-right: 10px;
 }
 .collection-img img {
   width: 100%;
   height: 100%;
 }
-
+.dataShow-span {
+  margin-left: 10px;
+  line-height: 30px;
+}
 /* 评论区样式 */
 .comments-content {
   width: 100%;
@@ -383,7 +409,7 @@ export default {
   margin: 0 auto;
   padding: 0;
 }
-.el-input {
+.detail-el-input {
   width: 100%;
   margin-left: -50px;
 }

@@ -154,7 +154,7 @@ export default {
   transition: all ease-in-out 0.7s;
   opacity: 0.8;
 }
-.page-area{
+.page-area {
   width: 80%;
   margin: 0 auto;
   padding: 30px 0 50px;

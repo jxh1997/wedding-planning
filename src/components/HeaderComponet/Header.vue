@@ -71,12 +71,9 @@ export default {
 
   methods: {
     handleRemove() {
-      this.$store.dispatch('removeUser');
-      
+      this.$store.dispatch("removeUser");
     },
-  }
-
-  
+  },
 };
 </script>
 
@@ -100,6 +97,7 @@ export default {
   height: 50px;
   font-size: 14px;
   line-height: 50px;
+  margin-left: 10px;
 }
 .h_tel {
   width: 230px;
@@ -109,13 +107,16 @@ export default {
   display: flex;
   align-items: center;
 }
+.h_tel a {
+  text-decoration: none;
+}
 .tc {
   margin-left: 10px;
 }
 .username {
   max-width: 60px;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
   margin: 0 5px;
 }
@@ -123,13 +124,14 @@ export default {
   width: 80px;
   height: 50px;
   float: left;
-  font-size: 13px;
+  font-size: 14px;
   padding: 0 10px;
   text-align: center;
   overflow: hidden;
   line-height: 50px;
   transition: all 0.5s linear;
   color: #333;
+  text-decoration: none;
 }
 
 .cn {
@@ -154,5 +156,4 @@ export default {
   text-decoration: none;
   color: #333;
 }
-
 </style>
