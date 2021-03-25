@@ -26,6 +26,22 @@
           <i class="el-icon-thumb"></i>
           {{ dataShow.fabulous }}
         </div>
+
+        <!-- 收藏 -->
+        <div class="collection-img" @click="collection(id)">
+          <img
+            src="@/assets/images/Collection.png"
+            alt=""
+            srcset=""
+            v-if="isCollection"
+          />
+          <img
+            src="@/assets/images/Collection_HL.png"
+            alt=""
+            srcset=""
+            v-else
+          />
+        </div>
       </div>
 
       <!-- 婚礼详情 -->
@@ -128,7 +144,7 @@ export default {
   components: {
     Title,
   },
-  // 详情页: {{this.$route.query.id}}
+  // 详情页: {{}}
   data() {
     var validateComment = (rule, value, callback) => {
       if (value === "") {
@@ -141,6 +157,7 @@ export default {
       }
     };
     return {
+      id: this.$route.query.id,
       dataShow: {
         w_id: 1,
         img: [require("../../assets/images/wednews/top-img.jpg")],
@@ -180,6 +197,7 @@ export default {
       rules: {
         comment: [{ validator: validateComment, trigger: "blur" }],
       },
+      isCollection: false, // 是否收藏
     };
   },
   methods: {
@@ -203,6 +221,23 @@ export default {
     // 评论重置
     resetForm(formName) {
       this.$refs[formName].resetFields();
+    },
+
+    // 收藏
+    collection(id) {
+      console.log(id);
+      this.isCollection = !this.isCollection;
+      if (this.isCollection) {
+        this.$message({
+          message: "取消收藏成功",
+          type: "success",
+        });
+      } else {
+        this.$message({
+          message: "收藏成功",
+          type: "success",
+        });
+      }
     },
   },
 };
@@ -286,6 +321,14 @@ export default {
   text-indent: 36px;
   text-align: justify;
   margin-bottom: 15px;
+}
+.collection-img {
+  width: 30px;
+  height: 30px;
+}
+.collection-img img {
+  width: 100%;
+  height: 100%;
 }
 
 /* 评论区样式 */
