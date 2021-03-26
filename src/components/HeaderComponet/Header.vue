@@ -33,7 +33,7 @@
             {{ $store.state.user.username }}
           </span>
           |
-          <a href="/#/signin" @click="handleRemove" class="tc">退出</a>
+          <a @click="gotoSignin" class="tc">退出</a>
         </div>
 
         <!-- 自动播放音乐 -->
@@ -46,7 +46,7 @@
           marginheight="0"
           width="330"
           height="86"
-          src="//music.163.com/outchain/player?type=2&id=27899008&auto=1&height=66"
+          :src="musicUrl"
         ></iframe>
       </div>
     </header>
@@ -58,6 +58,7 @@
 export default {
   data() {
     return {
+      musicUrl: "//music.163.com/outchain/player?type=2&id=27899008&auto=0&height=66",
       content: Object.freeze([
         { cn: "网站首页", en: "HOME", link: "/home" },
         { cn: "套餐选择", en: "CHOICE", link: "/choice" },
@@ -70,10 +71,29 @@ export default {
   },
 
   methods: {
-    handleRemove() {
+    gotoSignin() {
+
+      this.$router.push({
+        path: "/signin",
+      });
       this.$store.dispatch("removeUser");
+
     },
   },
+
+  created() {
+     // 音乐列表
+    this.$axios
+      .get(`/getMusicInfoList`)
+      .then((res) => {
+        console.log(res.data);
+        if(res.code === '0'){
+          // this.$data.musicUrl = res.data.filepath;
+        } else {
+          console.log(res.msg);
+        }
+      })
+  }
 };
 </script>
 

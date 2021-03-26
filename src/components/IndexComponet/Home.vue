@@ -43,7 +43,19 @@ export default {
       ]
     }
   },
-  
+  created() {
+    // 轮播图请求
+    this.$axios
+      .get(`/getBannerInfoList`)
+      .then((res) => {
+        console.log(res.data);
+        if(res.code === '0'){
+          // this.$data.images = res.data;
+        } else {
+          console.log(res.msg);
+        }
+      })
+  }
 }
 </script>
 

@@ -67,43 +67,42 @@ export default {
       let username = formName.username;
       let password = formName.pass;
 
-      console.log(username, password);
       if (username && password) {
-        
-        // this.axios.post('/test/userlogin' , {
-        //     username, 
-        //     password 
-        // }).then(res => {
-        //   console.log(res);
-        // })
+        this.$axios
+          .post(`/userlogin?username=${username}&password=${password}`)
+          .then((res) => {
+            // code === 0   =>  用户登录
+            // code === 10001   =>  用户未注册
+            if (res.data.code === "0") {
+              this.$message({
+                message: "登录成功",
+                type: "success",
+              });
 
-        this.$axios.post('/userlogin', { 
-            username, 
-            password 
-          }).then(res => {
-          console.log(res);
-        })
+              let userInfo = res.data.data;
 
+              this.$store.state.isLogin = true;
 
-        // this.$message({
-        //   message: "登录成功",
-        //   type: "success",
-        // });
+              this.$store.dispatch("setUserName", userInfo);
 
-        console.log(this.$store.state);
-        // this.$store.state.isLogin = true;
+              // 3s后跳转到首页
+              setTimeout(() => {
+                this.$router.push({
+                  path: "/home",
+                });
+              }, 3000);
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          });
 
-        // this.$store.dispatch("setUserName", formName);
-
-        // 3s后跳转到首页
-        // setTimeout(() => {
-        //   this.$router.push({
-        //     path: "/home",
-        //   });
-        // }, 3000);
+        // console.log(this.$store.state);
       } else {
         this.$message({
-          message: "登录失败",
+          message: "请正确填写用户名和密码",
           type: "warning",
         });
       }

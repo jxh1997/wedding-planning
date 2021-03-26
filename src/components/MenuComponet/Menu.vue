@@ -7,12 +7,12 @@
         <!-- <a href target="_blank">more +</a> -->
       </div>
       <ul class="news_cont">
-        <li v-for="(item , index) in weddingContent" :key="index">
+        <li v-for="(item, index) in weddingContent" :key="index">
           <a @click="gotoDetail(item.w_id)">
             <img :src="item.img" alt />
-            <h4>{{item.title}}</h4>
-            <time>{{item.time}}</time>
-            <p>{{item.desc}}</p>
+            <h4>{{ item.title }}</h4>
+            <time>{{ item.time }}</time>
+            <p>{{ item.desc }}</p>
             <span>阅读全文></span>
           </a>
         </li>
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Yuyue from '@/components/YuyueComponet/Yuyue';
+import Yuyue from "@/components/YuyueComponet/Yuyue";
 export default {
   components: {
     Yuyue,
@@ -37,46 +37,46 @@ export default {
       weddingContent: [
         {
           w_id: 1,
-          img: [
-            require('../../assets/images/wednews/news1.jpg')
-          ],
-          title: '伦敦时装周春夏| 2019 ...',
-          time: 'TIME:2018/10/20',
-          desc: '每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report)',
-          content: '每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report),每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report),每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report)',
+          img: [require("../../assets/images/wednews/news1.jpg")],
+          title: "伦敦时装周春夏| 2019 ...",
+          time: "TIME:2018/10/20",
+          desc:
+            "每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report)",
+          content:
+            "每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report),每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report),每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report)",
         },
         {
           w_id: 2,
-          img: [
-             require('../../assets/images/wednews/news2.jpg')
-          ],
-          title: '婚礼颜色搭配法则 | 流...',
-          time: 'TIME:2018/10/22',
-          desc: '新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真',
-          content: '新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真,新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真,新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真',
+          img: [require("../../assets/images/wednews/news2.jpg")],
+          title: "婚礼颜色搭配法则 | 流...",
+          time: "TIME:2018/10/22",
+          desc:
+            "新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真",
+          content:
+            "新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真,新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真,新人置办婚礼面临的第一个问题就是：选什么颜色搭配。因为选好了颜色，才能开始选择花材、装饰物，礼服，甚至西装等等。所以选对颜色真",
         },
         {
           w_id: 3,
-          img: [
-             require('../../assets/images/wednews/news3.jpg')
-          ],
-          title: '视帝陈展鹏大婚 | 新娘...',
-          time: 'TIME:2018/10/24',
-          desc: '视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准',
-          content: '视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准,视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准,视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准',
+          img: [require("../../assets/images/wednews/news3.jpg")],
+          title: "视帝陈展鹏大婚 | 新娘...",
+          time: "TIME:2018/10/24",
+          desc:
+            "视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准",
+          content:
+            "视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准,视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准,视帝陈展鹏早在上个月的时候，便通过big big channel跟大家开心分享即将与港姐女友单文柔结婚的好消息，时间一眨眼就过去，相信这对准",
         },
         {
           w_id: 4,
-          img: [
-             require('../../assets/images/wednews/news4.jpg')
-          ],
-          title: '心动的信号 | 即将收官...',
-          time: 'TIME:2018/10/23',
-          desc: '等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不',
-          content: '等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不',
-        }
-      ]
-    }
+          img: [require("../../assets/images/wednews/news4.jpg")],
+          title: "心动的信号 | 即将收官...",
+          time: "TIME:2018/10/23",
+          desc:
+            "等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不",
+          content:
+            "等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不",
+        },
+      ],
+    };
   },
 
   methods: {
@@ -84,12 +84,26 @@ export default {
       console.log(w_id);
       // 路由跳转传参
       this.$router.push({
-        path:'/choice/details',   // 跳转的路径
-        query:{
-          id: w_id ,
+        path: "/choice/details", // 跳转的路径
+        query: {
+          id: w_id,
+        },
+      });
+    },
+  },
+
+  created() {
+    // 婚礼信息请求
+    this.$axios
+      .get(`/getHlInfoList`)
+      .then((res) => {
+        console.log(res.data);
+        if(res.code === '0'){
+          // this.$data.weddingContent = res.data;
+        } else {
+          console.log(res.msg);
         }
       })
-    }
   }
 };
 </script>

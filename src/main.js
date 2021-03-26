@@ -15,13 +15,16 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 // Vue.use(Axios);
 
-// axios 改写为 Vue 的原型属性
+// 解决跨域：1. 配置BaseUrl
 import axios from 'axios'
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = '/test'  //关键代码
+Vue.config.productionTip = false
+
 
 // beforeEach 函数中to 是要去 的页面 from 是从哪里还. next 是要执行的操作
 router.beforeEach((to, from, next ) => {
-  if(to.meta.isAuthRequired && store.state.user.isLogin === false) {
+  if(to.meta.isAuthRequired && store.state.isLogin === false) {
     return next('/signin')
   } else {
     next()

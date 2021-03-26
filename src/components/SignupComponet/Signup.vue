@@ -16,6 +16,13 @@
           autocomplete="off"
         ></el-input>
       </el-form-item>
+      <el-form-item label="昵称" prop="nickname">
+        <el-input
+          type="nickname"
+          v-model="ruleForm.nickname"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
 
       <el-form-item label="密码" prop="pass">
         <el-input
@@ -52,6 +59,11 @@ export default {
         return callback(new Error("用户名不能为空"));
       }
     };
+    var nickname = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("昵称不能为空"));
+      }
+    };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -74,12 +86,14 @@ export default {
     return {
       ruleForm: {
         username: "",
+        nickname: "",
         pass: "",
         checkPass: "",
       },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
         username: [{ validator: username, trigger: "blur" }],
+        nickname: [{ validator: nickname, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
       },
     };
@@ -88,41 +102,38 @@ export default {
     // 注册
     RegisterForm(formName) {
       let username = formName.username;
+      let nickname = formName.nickname;
       let password = formName.pass;
       let password2 = formName.checkPass;
 
-      if (username && password === password2) {
+      if (username && nickname && password === password2) {
+        this.$axios
+          .post(
+            `/reguser?username=${username}&nickname=${nickname}&password=${password}`
+          )
+          .then((res) => {
+            // console.log(res.data);
+            if (res.data.code === "0") {
+              this.$message({
+                message: "注册成功",
+                type: "success",
+              });
 
-        // this.axios.post('/test/reguser' , {
-        //     username, 
-        //     password  
-        // }).then(res => {
-        //   console.log(res);
-        // })
-        
-        this.axios({
-          method: 'post',
-          url: '/test/reguser', 
-          data: { 
-            username, 
-            password 
-          }
-        }).then(res => {
-          console.log(res);
-        })
-
-        // this.$message({
-        //   message: "注册成功",
-        //   type: "success",
-        // });
-        // setTimeout(() => {
-        //   this.$router.push({
-        //     path: "/signin",
-        //   });
-        // }, 3000);
+              setTimeout(() => {
+                this.$router.push({
+                  path: "/signin",
+                });
+              }, 3000);
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          });
       } else {
         this.$message({
-          message: "注册失败",
+          message: "请填写注册信息",
           type: "warning",
         });
       }

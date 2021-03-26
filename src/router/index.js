@@ -28,15 +28,15 @@ export default new Router({
     {
       path: "/signin",
       component: Signin,
-      meta:{
+      meta: {
         showNav: false   // 是否显示header和footer
       }
     },
     {
       path: "/signup",
       component: Signup,
-      meta:{
-        showNav: false  
+      meta: {
+        showNav: false
       }
     },
     {
@@ -59,15 +59,24 @@ export default new Router({
     },
     {
       path: "/type",
-      component: Type
+      component: Type,
+      meta: {
+        isAuthRequired: true   // 是否需要登录
+      },
     },
     {
       path: "/dress",
-      component: Dress
+      component: Dress,
+      meta: {
+        isAuthRequired: true   // 是否需要登录
+      },
     },
     {
       path: "/graphy",
-      component: Graphy
+      component: Graphy,
+      meta: {
+        isAuthRequired: true   // 是否需要登录
+      },
     },
     {
       path: "/personal",
@@ -79,14 +88,23 @@ export default new Router({
         {
           path: "/personal/information",
           component: Information,
+          meta: {
+            isAuthRequired: true   // 是否需要登录
+          },
         },
         {
           path: "/personal/collection",
           component: Collection,
+          meta: {
+            isAuthRequired: true   // 是否需要登录
+          },
         },
         {
           path: "/personal/yuyue",
           component: Yuyue,
+          meta: {
+            isAuthRequired: true   // 是否需要登录
+          },
         }
       ]
     }
