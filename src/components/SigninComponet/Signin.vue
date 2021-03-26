@@ -1,6 +1,5 @@
 <template>
   <div class="login-content">
-    
     <el-form
       :model="ruleForm"
       status-icon
@@ -17,7 +16,7 @@
           autocomplete="off"
         ></el-input>
       </el-form-item>
-      
+
       <el-form-item label="密码" prop="pass">
         <el-input
           type="password"
@@ -30,17 +29,12 @@
         <el-button type="primary" @click="LoginForm(ruleForm)">
           登录
         </el-button>
-        <el-button @click="registerForm(ruleForm)">
-          注册
-        </el-button>
+        <el-button @click="registerForm(ruleForm)"> 注册 </el-button>
       </el-form-item>
 
-      <div class="gohome" @click="goHome">
-        暂不登录，返回首页
-      </div>
+      <div class="gohome" @click="goHome">暂不登录，返回首页</div>
     </el-form>
   </div>
-
 </template>
 
 <script>
@@ -74,30 +68,43 @@ export default {
       let password = formName.pass;
 
       console.log(username, password);
-      if(username && password) {
-        this.$message({
-          message: '登录成功',
-          type: 'success'
-        });
+      if (username && password) {
+        
+        // this.axios.post('/test/userlogin' , {
+        //     username, 
+        //     password 
+        // }).then(res => {
+        //   console.log(res);
+        // })
 
+        this.$axios.post('/userlogin', { 
+            username, 
+            password 
+          }).then(res => {
+          console.log(res);
+        })
+
+
+        // this.$message({
+        //   message: "登录成功",
+        //   type: "success",
+        // });
 
         console.log(this.$store.state);
-        this.$store.state.isLogin = true;
+        // this.$store.state.isLogin = true;
 
-        this.$store.dispatch('setUserName', formName);
+        // this.$store.dispatch("setUserName", formName);
 
         // 3s后跳转到首页
-        setTimeout(() => {
-          this.$router.push({
-            path: '/home'
-          })
-        } , 3000)
-
-
+        // setTimeout(() => {
+        //   this.$router.push({
+        //     path: "/home",
+        //   });
+        // }, 3000);
       } else {
         this.$message({
-          message: '登录失败',
-          type: 'warning'
+          message: "登录失败",
+          type: "warning",
         });
       }
     },
@@ -105,16 +112,16 @@ export default {
     // 注册跳转
     registerForm() {
       this.$router.push({
-        path: '/signup'
-      })
+        path: "/signup",
+      });
     },
 
     // 返回首页
     goHome() {
       this.$router.push({
-        path: '/home'
-      })
-    }
+        path: "/home",
+      });
+    },
   },
 };
 </script>
@@ -151,5 +158,4 @@ export default {
   /* line-height: 60px; */
   margin-bottom: 20px;
 }
-
 </style>

@@ -8,7 +8,7 @@
       label-width="100px"
       class="login-from"
     >
-    <div class="login-title">账 号 注 册</div>
+      <div class="login-title">账 号 注 册</div>
       <el-form-item label="用户名" prop="username">
         <el-input
           type="username"
@@ -91,20 +91,39 @@ export default {
       let password = formName.pass;
       let password2 = formName.checkPass;
 
-      if(username && password === password2) {
-        this.$message({
-          message: '注册成功',
-          type: 'success'
-        });
-        setTimeout(() => {
-          this.$router.push({
-            path: '/signin'
-          })
-        } , 3000)
+      if (username && password === password2) {
+
+        // this.axios.post('/test/reguser' , {
+        //     username, 
+        //     password  
+        // }).then(res => {
+        //   console.log(res);
+        // })
+        
+        this.axios({
+          method: 'post',
+          url: '/test/reguser', 
+          data: { 
+            username, 
+            password 
+          }
+        }).then(res => {
+          console.log(res);
+        })
+
+        // this.$message({
+        //   message: "注册成功",
+        //   type: "success",
+        // });
+        // setTimeout(() => {
+        //   this.$router.push({
+        //     path: "/signin",
+        //   });
+        // }, 3000);
       } else {
         this.$message({
-          message: '注册失败',
-          type: 'warning'
+          message: "注册失败",
+          type: "warning",
         });
       }
     },

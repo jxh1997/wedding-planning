@@ -2,7 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router/index'
 import store from './store/index';
-import axios from './utils/axios'
+// import axios from './utils/axios'
+
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -10,8 +11,13 @@ import 'element-ui/lib/theme-chalk/index.css';
 import "@/assets/style/base.css";
 
 Vue.config.productionTip = false;
-Vue.use(axios);
+
 Vue.use(ElementUI);
+// Vue.use(Axios);
+
+// axios 改写为 Vue 的原型属性
+import axios from 'axios'
+Vue.prototype.$axios = axios;
 
 // beforeEach 函数中to 是要去 的页面 from 是从哪里还. next 是要执行的操作
 router.beforeEach((to, from, next ) => {
