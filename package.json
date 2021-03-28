@@ -1,6 +1,7 @@
 {
   "name": "wedding-planning",
   "version": "0.1.0",
+  "author": "jingxh1997@outlook.com",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
