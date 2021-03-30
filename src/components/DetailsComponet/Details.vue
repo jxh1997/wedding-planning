@@ -75,7 +75,7 @@
 
       <div class="comments-content">
         <div class="comments-none" v-if="commentData.length === 0">
-          <img src="@/assets/images/icon/none.png" alt="">
+          <img src="@/assets/images/icon/none.png" alt="" />
           暂无评论，快去发布吧。
         </div>
         <ul class="comments-content-ul">
@@ -239,7 +239,6 @@ export default {
             } else {
               this.isFabulous = false;
             }
-            console.log(this.isFabulous);
           });
         } else {
           this.$message({
@@ -300,12 +299,26 @@ export default {
             .get(`/getUserinfoById?id=${this.$store.state.user.id}`)
             .then((userRes) => {
               if (userRes.data.code === "0") {
+                // 获取用户昵称，头像
                 for (var i = 0; i < this.commentData.length; i++) {
                   if (this.commentData[i].id === userRes.data.data.id) {
                     this.commentData[i].nickname = userRes.data.data.nickname;
                     this.commentData[i].imgpath = userRes.data.data.imgpath;
                   }
                 }
+                // 获取用户收藏列表
+                // 查询当前用户是否收藏该婚礼
+                let scListArr;
+                let sclist = userRes.data.data.sclist || "";
+                scListArr = sclist.split(",");
+
+                scListArr.map((item) => {
+                  if (item == this.id) {
+                    this.isCollection = true;
+                  } else {
+                    this.isCollection = false;
+                  }
+                });
               }
             });
         } else {
@@ -345,22 +358,31 @@ export default {
     },
 
     // 收藏
-    collection(id) {
-      console.log(id);
-      this.isCollection = !this.isCollection;
-      if (!this.isCollection) {
-        this.$message({
-          message: "取消收藏",
-          type: "success",
-          duration: 2000,
-        });
-      } else {
-        this.$message({
-          message: "收藏成功",
-          type: "success",
-          duration: 2000,
-        });
-      }
+    collection() {
+      this.$axios.post(`/scaction?id=${this.id}`).then((scRes) => {
+        if (scRes.data.code === "0") {
+          this.isCollection = !this.isCollection;
+          if (!this.isCollection) {
+            this.$message({
+              message: "取消收藏",
+              type: "success",
+              duration: 2000,
+            });
+          } else {
+            this.$message({
+              message: "收藏成功",
+              type: "success",
+              duration: 2000,
+            });
+          }
+        } else {
+          this.$message({
+            message: "收藏失败",
+            type: "warning",
+            duration: 2000,
+          });
+        }
+      });
     },
   },
 };

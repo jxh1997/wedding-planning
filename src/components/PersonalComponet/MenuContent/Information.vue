@@ -17,12 +17,18 @@
             class="info-input"
           ></el-input>
         </el-form-item>
-        <el-form-item label="头像" prop="userhead">
+        <el-form-item label="昵称" prop="nickname">
+          <el-input
+            v-model="infoRuleForm.nickname"
+            class="info-input"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="头像" prop="imgpath">
           <el-avatar
             shape="square"
             :size="100"
             :fit="fit"
-            :src="infoRuleForm.userhead"
+            :src="$store.state.user.baseUrl + infoRuleForm.imgpath"
             class="info-input"
           ></el-avatar>
           <!-- 上传头像 -->
@@ -30,6 +36,9 @@
             修改头像
           </el-button>
         </el-form-item>
+        <el-button type="primary" @click="saveInfo">
+          保存修改
+        </el-button>
       </el-form>
     </div>
 
@@ -37,12 +46,12 @@
     <el-dialog title="头像上传" :visible.sync="dialogFormVisibleHead">
       <el-upload
         class="avatar-uploader"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        :action="baseUrl"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
       >
-        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <img v-if="$store.state.user.imgpath" :src="$store.state.user.imgpath" class="avatar" />
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
       <div slot="footer" class="dialog-footer">
@@ -59,9 +68,11 @@
 export default {
   data() {
     return {
-      infoRuleForm: {
+      baseUrl: "/test/uploadfile",
+      infoRuleForm:{
         username: this.$store.state.user.username,
-        userhead: require("@/assets/images/blog-writer.png"), // 用户头像
+        nickname: this.$store.state.user.nickname,
+        imgpath:  this.$store.state.user.imgpath,
       },
       infoRules: {
         username: [
@@ -70,13 +81,12 @@ export default {
       },
       dialogFormVisibleHead: false, // 修改头像弹出
       dialogFormVisiblePass: false, // 修改密码弹出
-      imageUrl: "", // 上传图片地址
     };
   },
   methods: {
     // 图片上传
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.$store.state.user.imgpath = URL.createObjectURL(file.raw);
     },
 
     beforeAvatarUpload(file) {

@@ -3,12 +3,11 @@
 <template>
   <div class="info">
     <div class="portrait">
-      <img :src="userInfo.head" width="80" height="80" />
+      <img :src="$store.state.baseUrl + userInfo.head" width="80" height="80" />
     </div>
 
     <div class="user-info">
       <div class="nick" v-text="userInfo.name"></div>
-
       <div class="uid" v-text="'ID:' + userInfo.uid"></div>
     </div>
   </div>
@@ -20,9 +19,9 @@ export default {
   data() {
     return {
       userInfo: {
-        head: require("@/assets/images/blog-writer.png"),
+        head: this.$store.state.user.imgpath,
         name: this.$store.state.user.username,
-        uid: "10000",
+        uid: this.$store.state.user.id,
       },
     };
   },
