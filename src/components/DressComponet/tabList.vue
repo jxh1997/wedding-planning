@@ -29,7 +29,6 @@ export default {
   data() {
     return {
       current: 0,
-      srcLists: [],
       tabItems: [
         { name: "全部", d_id: 1 },
         { name: "西式婚纱", d_id: 2 },
@@ -120,18 +119,9 @@ export default {
   },
 
   created() {
-    this.axiosRequest({
-      url: "/gallery/",
-      method: "get",
-    }).then((res) => {
-      if (res.status === 200) {
-        this.srcLists = res.data.data;
-      }
-    });
+    
   },
-  mounted() {
-    this.srcLists = this.$store.state.story.srcLists;
-  },
+
 };
 </script>
 <style scoped>

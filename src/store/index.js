@@ -8,6 +8,7 @@ export default new Vuex.Store({
     state: {
         user: getCookie(),
         isLogin: false,
+        baseUrl: "http://152.136.229.70:8011/test",  // 图片地址
     },
 
     mutations: {

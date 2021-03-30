@@ -2,38 +2,54 @@
   <div class="detail-content">
     <!-- header 标头 -->
     <div>
-      <el-page-header @back="goBack" :content="dataShow.title">
+      <el-page-header @back="goBack" :content="dataShow.titletext">
       </el-page-header>
     </div>
     <!-- 婚礼详情 -->
     <div class="container">
       <div class="top">
-        <img class="top-img" :src="dataShow.img[0]" />
+        <img class="top-img" :src="$store.state.baseUrl + dataShow.imgpath" />
       </div>
 
       <div class="block">
-        <div class="collection-img">
-          <img src="@/assets/images/icon/time.png" />
-          <span class="dataShow-span">{{ dataShow.time }}</span>
+        <div class="block-flx">
+          <div class="collection-img">
+            <img src="@/assets/images/icon/time.png" />
+          </div>
+          <span class="dataShow-span">{{
+            dataShow.createtime.slice(0, 10) +
+            " " +
+            dataShow.createtime.slice(11, 19)
+          }}</span>
         </div>
 
         <!-- 评论数 -->
-        <div class="collection-img">
-          <img src="@/assets/images/icon/comments.png" />
-          <span class="dataShow-span">{{ dataShow.comments }}</span>
+        <div class="block-flx">
+          <div class="collection-img">
+            <img src="@/assets/images/icon/comments.png" />
+          </div>
+          <span class="dataShow-span">{{ commentCount }}</span>
         </div>
 
         <!-- 点赞数 -->
-        <div class="collection-img" @click="fabulous(id)">
-          <img src="@/assets/images/icon/fabulous.png" v-if="!isFabulous" />
-          <img src="@/assets/images/icon/fabulous_HL.png" v-else />
-          <span class="dataShow-span">{{ dataShow.fabulous }}</span>
+        <div class="block-flx" @click="fabulous">
+          <div class="collection-img">
+            <img src="@/assets/images/icon/fabulous.png" v-if="!isFabulous" />
+            <img src="@/assets/images/icon/fabulous_HL.png" v-else />
+          </div>
+          <span class="dataShow-span">{{ FabulousCount }}</span>
         </div>
 
         <!-- 收藏 -->
-        <div class="collection-img" @click="collection(id)">
-          <img src="@/assets/images/icon/Collection.png" v-if="!isCollection" />
-          <img src="@/assets/images/icon/Collection_HL.png" v-else />
+        <div class="block-flx" @click="collection()">
+          <div class="collection-img">
+            <img
+              src="@/assets/images/icon/Collection.png"
+              v-if="!isCollection"
+            />
+            <img src="@/assets/images/icon/Collection_HL.png" v-else />
+          </div>
+          <span class="dataShow-span">{{ dataShow.fabulous }}</span>
         </div>
       </div>
 
@@ -41,22 +57,15 @@
       <Title>婚礼详情</Title>
 
       <div class="desc">
-        <p>{{ dataShow.desc }}</p>
+        <p>{{ dataShow.infotext }}</p>
       </div>
 
       <div class="text">
-        <div class="text-img2">
-          <img
-            class="img2"
-            v-for="img in dataShow.img2"
-            :src="img"
-            :key="img"
-          />
-        </div>
+        <div class="text-img2"></div>
 
         <div class="text-content">
-          <p class="text2" v-for="text in dataShow.content" :key="text">
-            {{ text }}
+          <p class="text2">
+            {{ dataShow.xqtext }}
           </p>
         </div>
       </div>
@@ -65,6 +74,10 @@
       <Title>评论</Title>
 
       <div class="comments-content">
+        <div class="comments-none" v-if="commentData.length === 0">
+          <img src="@/assets/images/icon/none.png" alt="">
+          暂无评论，快去发布吧。
+        </div>
         <ul class="comments-content-ul">
           <li
             v-for="(c, i) in commentData"
@@ -73,24 +86,21 @@
           >
             <!-- 作者头像 -->
             <div class="author-img">
-              <img :src="c.author_head" alt="" />
+              <img :src="$store.state.baseUrl + c.imgpath" alt="" />
             </div>
             <!-- 评论内容 -->
             <div class="author-details">
               <div class="author-details2">
                 <!-- 作者名称 -->
                 <h4 class="author-name">
-                  {{ c.author_name }}
+                  {{ c.nickname }}
                   <!-- 评论时间 -->
                   <span class="comment-date-time">
-                    {{ c.time }}
-                    <!-- {{
-                      item.time.slice(0, 10) + "  " + item.time.slice(11, 19)
-                    }} -->
+                    {{ c.fbtime }}
                   </span>
                 </h4>
               </div>
-              <div class="comment-content">{{ c.content }}</div>
+              <div class="comment-content">{{ c.textinfo }}</div>
             </div>
           </li>
         </ul>
@@ -121,7 +131,7 @@
           <el-form-item class="form-item3">
             <el-button
               type="primary"
-              @click="submitForm('ruleForm')"
+              @click="submitPlInfo('ruleForm')"
               class="button1"
               >提交</el-button
             >
@@ -142,7 +152,6 @@ export default {
   components: {
     Title,
   },
-  // 详情页: {{}}
   data() {
     var validateComment = (rule, value, callback) => {
       if (value === "") {
@@ -155,14 +164,16 @@ export default {
       }
     };
     return {
-      id: this.$route.query.id,
+      id: this.$route.query.id, // 当前的婚礼id
+
+      // 展示的婚礼数据
       dataShow: {
-        w_id: 1,
-        img: [require("../../assets/images/wednews/top-img.jpg")],
-        img2: [
-          require("../../assets/images/wednews/ssss1.jpg"),
-          require("../../assets/images/wednews/ssss3.jpg"),
-        ],
+        id: 1,
+        // img: [require("../../assets/images/wednews/top-img.jpg")],
+        // img2: [
+        //   require("../../assets/images/wednews/ssss1.jpg"),
+        //   require("../../assets/images/wednews/ssss3.jpg"),
+        // ],
         title: "伦敦时装周春夏| 2019 ...",
         time: "TIME:2018/10/20",
         comments: 3,
@@ -174,21 +185,22 @@ export default {
           "2019春夏伦敦时装周已经落下帷幕，Riccardo Tisci执掌的博柏利（Burberry）颇受好评，Victoria Beckham的十周年大秀不负众望，Anya Hindmarch的Chubby Cloud装置艺术更是时装周日程之外最热门的打卡之地。我们为你总结2019春夏伦敦时装周新鲜出炉的十大时尚趋势，为你提供新一季的穿搭灵感！",
         ],
       },
+
+      // 评论
       commentData: [
         {
-          author_head: require("@/assets/images/blog-writer.png"),
-          author_name: "John Doe",
-          content:
+          imgpath: require("@/assets/images/blog-writer.png"),
+          nickname: "John Doe",
+          textinfo:
             "因为我最小的时候，我们中间有谁受了肉体的刺青，并且痛苦地死了，除非他能接受。",
-          time: "2019/12/14 10:26",
-        },
-        {
-          author_head: require("@/assets/images/blog-writer.png"),
-          author_name: "Liu Long",
-          content: "这是我的第一条评论。",
-          time: "2020/10/11 12:42",
+          fbtime: "2019/12/14 10:26",
         },
       ],
+
+      commentCount: 0, // 评论数
+      FabulousCount: 0, // 点赞数
+
+      // 表单验证规则
       ruleForm: {
         comment: "",
       },
@@ -199,19 +211,73 @@ export default {
       isFabulous: false, // 是否点赞
     };
   },
+  created() {
+    this.getWeddingInfo(this.id);
+    this.getPlList();
+  },
+
   methods: {
     // 后退
     goBack() {
       history.back();
     },
 
+    // 根据婚礼Id,获取婚礼信息
+    getWeddingInfo(id) {
+      this.$axios.post(`/getHlinfoById?id=${id}`).then((res) => {
+        if (res.data.code === "0") {
+          this.dataShow = res.data.data;
+          // 查询当前用户是否给当前婚礼点赞
+          let dzListArr;
+          let dzlist = res.data.data.dzlist || "";
+          dzListArr = dzlist.split(",");
+          this.FabulousCount = dzListArr.length;
+
+          dzListArr.map((item) => {
+            if (item == this.$store.state.user.id) {
+              this.isFabulous = true;
+            } else {
+              this.isFabulous = false;
+            }
+            console.log(this.isFabulous);
+          });
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: "warning",
+          });
+        }
+      });
+    },
+
     // 评论提交
-    submitForm(formName) {
+    submitPlInfo(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          this.$axios
+            .post(
+              `/insPlinfo?hlid=${this.id}&textinfo=${this.ruleForm.comment}&userid=${this.$store.state.user.id}`
+            )
+            .then((res) => {
+              if (res.data.code === "0") {
+                this.$message({
+                  message: "评论成功",
+                  type: "success",
+                });
+                this.$refs[formName].resetFields();
+                this.getPlList();
+              } else {
+                this.$message({
+                  message: res.data.msg,
+                  type: "warning",
+                });
+              }
+            });
         } else {
-          console.log("error submit!!");
+          this.$message({
+            message: "评论失败",
+            type: "warning",
+          });
           return false;
         }
       });
@@ -222,23 +288,60 @@ export default {
       this.$refs[formName].resetFields();
     },
 
-    // 点赞fabulous
-    fabulous(id) {
-      console.log(id);
-      this.isFabulous = !this.isFabulous;
-      if (!this.isFabulous) {
-        this.$message({
-          message: "取消点赞",
-          type: "success",
-          duration: 2000,
-        });
-      } else {
-        this.$message({
-          message: "点赞成功",
-          type: "success",
-          duration: 2000,
-        });
-      }
+    // 获取评论列表
+    getPlList() {
+      this.$axios.get(`/getPlInfoList?hlid=${this.id}`).then((res) => {
+        if (res.data.code === "0") {
+          this.commentData = [];
+          this.commentData = res.data.data;
+          this.commentCount = res.data.count;
+          // 请求用户信息
+          this.$axios
+            .get(`/getUserinfoById?id=${this.$store.state.user.id}`)
+            .then((userRes) => {
+              if (userRes.data.code === "0") {
+                for (var i = 0; i < this.commentData.length; i++) {
+                  if (this.commentData[i].id === userRes.data.data.id) {
+                    this.commentData[i].nickname = userRes.data.data.nickname;
+                    this.commentData[i].imgpath = userRes.data.data.imgpath;
+                  }
+                }
+              }
+            });
+        } else {
+          this.commentData = [];
+        }
+      });
+    },
+
+    // 点赞
+    fabulous() {
+      this.$axios.post(`/dzaction?id=${this.id}`).then((dzRes) => {
+        if (dzRes.data.code === "0") {
+          this.isFabulous = !this.isFabulous;
+          if (!this.isFabulous) {
+            this.$message({
+              message: "取消点赞",
+              type: "success",
+              duration: 2000,
+            });
+            --this.FabulousCount;
+          } else {
+            this.$message({
+              message: "点赞成功",
+              type: "success",
+              duration: 2000,
+            });
+            ++this.FabulousCount;
+          }
+        } else {
+          this.$message({
+            message: "点赞失败",
+            type: "warning",
+            duration: 2000,
+          });
+        }
+      });
     },
 
     // 收藏
@@ -300,6 +403,9 @@ export default {
   margin: 0 auto;
   margin-bottom: 30px;
 }
+.block-flx {
+  display: flex;
+}
 
 .desc {
   display: flex;
@@ -333,8 +439,8 @@ export default {
   border-radius: 0;
 }
 .text-content {
-  width: 80%;
-  margin: 0 auto;
+  width: 100%;
+  margin: 30px auto;
 }
 .text2 {
   font-size: 18px;
@@ -356,6 +462,7 @@ export default {
 .dataShow-span {
   margin-left: 10px;
   line-height: 30px;
+  max-width: 200px;
 }
 /* 评论区样式 */
 .comments-content {
@@ -412,5 +519,17 @@ export default {
 .detail-el-input {
   width: 100%;
   margin-left: -50px;
+}
+
+/* 内容为空 */
+.comments-none {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 30px;
+  color: rgb(189, 186, 186);
 }
 </style>

@@ -8,11 +8,11 @@
       </div>
       <ul class="news_cont">
         <li v-for="(item, index) in weddingContent" :key="index">
-          <a @click="gotoDetail(item.w_id)">
-            <img :src="item.img" alt />
-            <h4>{{ item.title }}</h4>
-            <time>{{ item.time }}</time>
-            <p>{{ item.desc }}</p>
+          <a @click="gotoDetail(item.id)">
+            <img :src="$store.state.baseUrl + item.imgpath" alt />
+            <h4>{{ item.titletext }}</h4>
+            <time>TIME: {{ item.createtime }}</time>
+            <p>{{ item.infotext }}</p>
             <span>阅读全文></span>
           </a>
         </li>
@@ -76,17 +76,19 @@ export default {
             "等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不",
         },
       ],
+
+      
     };
   },
 
   methods: {
-    gotoDetail(w_id) {
-      console.log(w_id);
+    gotoDetail(id) {
+      console.log(id);
       // 路由跳转传参
       this.$router.push({
         path: "/choice/details", // 跳转的路径
         query: {
-          id: w_id,
+          id: id,
         },
       });
     },
@@ -98,8 +100,9 @@ export default {
       .get(`/getHlInfoList`)
       .then((res) => {
         console.log(res.data);
-        if(res.code === '0'){
-          // this.$data.weddingContent = res.data;
+        if(res.data.code === '0'){
+          console.log("婚礼信息请求" , res.data.data);
+          this.weddingContent = res.data.data;
         } else {
           console.log(res.msg);
         }
@@ -148,6 +151,7 @@ export default {
 .news .news_cont {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 .news .news_cont li {
   width: 25%;

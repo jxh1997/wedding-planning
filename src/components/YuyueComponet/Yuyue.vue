@@ -9,11 +9,13 @@
         <div class="s_k1"></div>
         <div class="s_k2"></div>
         <div class="s_bm">
-            <div class="s_bm_title">
-              <p>请填写您的信息, 提交成功工作人员将在24小时内审核通过后, 请在个人中心查看并完成支付.</p>
-            </div>
+          <div class="s_bm_title">
+            <p>
+              请填写您的信息, 提交成功工作人员将在24小时内审核通过后,
+              请在个人中心查看并完成支付.
+            </p>
+          </div>
           <div class="s_left">
-            
             <el-form
               ref="ruleForm"
               :model="ruleForm"
@@ -21,6 +23,20 @@
               label-width="80px"
               class="yuyue-form"
             >
+              <el-form-item label="预约婚礼" prop="hlId">
+                <el-select v-model="title" placeholder="请选择所预约的婚礼" :change="setPrice()">
+                  <el-option
+                    v-for="item in hlOptions"
+                    :key="item.id"
+                    :label="item.titletext"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="价格" prop="price">
+                <el-input v-model="price" :disabled="true"></el-input>
+              </el-form-item>
               <el-form-item label="姓名" prop="name">
                 <el-input v-model="ruleForm.name"></el-input>
               </el-form-item>
@@ -31,18 +47,27 @@
                   placeholder="选择日期"
                   v-model="ruleForm.hunqi"
                   style="width: 100%"
+                  format="yyyy 年 MM 月 dd 日"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                 ></el-date-picker>
               </el-form-item>
-
+              
               <el-form-item label="电话" prop="tel">
                 <el-input v-model="ruleForm.tel"></el-input>
               </el-form-item>
 
-              <el-form-item >
-                <el-button type="primary" @click="submitForm('ruleForm')" class="yuyue-form-button"
+              <el-form-item>
+                <el-button
+                  type="primary"
+                  @click="submitForm('ruleForm')"
+                  class="yuyue-form-button"
                   >立即预约</el-button
                 >
-                <el-button @click="resetForm('ruleForm')" class="yuyue-form-button">重新填写</el-button>
+                <el-button
+                  @click="resetForm('ruleForm')"
+                  class="yuyue-form-button"
+                  >重新填写</el-button
+                >
               </el-form-item>
             </el-form>
           </div>
@@ -63,6 +88,7 @@ export default {
   data() {
     return {
       ruleForm: {
+        hlId: '',
         name: "",
         hunqi: "",
         tel: "",
@@ -71,7 +97,7 @@ export default {
         name: [{ required: true, message: "请输入您的姓名", trigger: "blur" }],
         hunqi: [
           {
-            type: "date",
+            type: "string",
             required: true,
             message: "请选择日期",
             trigger: "blur",
@@ -79,14 +105,56 @@ export default {
         ],
         tel: [{ required: true, message: "请输入电话号码", trigger: "blur" }],
       },
+      // 婚礼列表
+      hlOptions: [],
+      title: '',
+      price: 0,
     };
   },
 
+  created() {
+    // 获取婚礼列表
+    this.$axios
+      .get(`/getHlInfoList`)
+      .then((res) => {
+        if(res.data.code === '0'){
+          this.hlOptions = res.data.data;
+        }
+      })
+  },
+
   methods: {
+    // 设置订单价格
+    setPrice() {
+      this.hlOptions.map(item => {
+        if(item.id === this.title) {
+          this.price = item.price;
+        }
+      })
+    },
+
+    // 订单提交
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
+        // console.log(this.ruleForm.hunqi);
         if (valid) {
-          alert("submit!");
+          // let hunqiString = this.ruleForm.hunqi.toString();
+          this.$axios
+            .post(`/insDdinfo?hlid=${this.title}&userid=${this.$store.state.user.id}&price=${this.price}&yydate=${this.ruleForm.hunqi}`)
+            .then((res) => {
+              if(res.data.code === '0') {
+                console.log(res.data.data);
+                this.$message({
+                  message: res.data.msg,
+                  type: "success",
+                });
+              } else {
+                this.$message({
+                  message: res.data.msg,
+                  type: "warning",
+                });
+              }
+            })
         } else {
           console.log("error submit!!");
           return false;

@@ -86,7 +86,7 @@ export default {
     this.$axios
       .get(`/getMusicInfoList`)
       .then((res) => {
-        console.log(res.data);
+        console.log("getMusicInfoList: " , res.data);
         if(res.code === '0'){
           // this.$data.musicUrl = res.data.filepath;
         } else {
