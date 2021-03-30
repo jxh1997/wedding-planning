@@ -24,6 +24,12 @@ export default new Vuex.Store({
             state.user = '';
             state.isLogin = false;
           },
+
+        uploadAvatar(state, path) {
+            state.user.imgpath = path;
+        },
+
+
     },
 
     actions: {
@@ -32,6 +38,10 @@ export default new Vuex.Store({
         },
         removeUser({ commit }) {
             commit('removeUser');
+        },
+        // 上传头像
+        uploadAvatar({ commit }, path) {
+            commit('uploadAvatar', path);
         },
     },
 

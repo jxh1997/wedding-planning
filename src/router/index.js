@@ -88,6 +88,7 @@ export default new Router({
         {
           path: "/personal/information",
           component: Information,
+          name: Information,
           meta: {
             isAuthRequired: true   // 是否需要登录
           },
@@ -95,6 +96,7 @@ export default new Router({
         {
           path: "/personal/collection",
           component: Collection,
+          name: Collection,
           meta: {
             isAuthRequired: true   // 是否需要登录
           },
@@ -102,6 +104,7 @@ export default new Router({
         {
           path: "/personal/yuyue",
           component: Yuyue,
+          name: Yuyue,
           meta: {
             isAuthRequired: true   // 是否需要登录
           },

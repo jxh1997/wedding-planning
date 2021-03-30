@@ -16,11 +16,7 @@
           <div class="collection-img">
             <img src="@/assets/images/icon/time.png" />
           </div>
-          <span class="dataShow-span">{{
-            dataShow.createtime.slice(0, 10) +
-            " " +
-            dataShow.createtime.slice(11, 19)
-          }}</span>
+          <span class="dataShow-span">{{ dataShow.createtime.slice(0, 10) + " " + dataShow.createtime.slice(11, 19) }}</span>
         </div>
 
         <!-- 评论数 -->
@@ -133,11 +129,12 @@
               type="primary"
               @click="submitPlInfo('ruleForm')"
               class="button1"
-              >提交</el-button
             >
-            <el-button @click="resetForm('ruleForm')" class="button2"
-              >重置</el-button
-            >
+              提交
+              </el-button>
+            <el-button @click="resetForm('ruleForm')" class="button2">
+              重置
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -169,11 +166,6 @@ export default {
       // 展示的婚礼数据
       dataShow: {
         id: 1,
-        // img: [require("../../assets/images/wednews/top-img.jpg")],
-        // img2: [
-        //   require("../../assets/images/wednews/ssss1.jpg"),
-        //   require("../../assets/images/wednews/ssss3.jpg"),
-        // ],
         title: "伦敦时装周春夏| 2019 ...",
         time: "TIME:2018/10/20",
         comments: 3,
@@ -211,6 +203,7 @@ export default {
       isFabulous: false, // 是否点赞
     };
   },
+  
   created() {
     this.getWeddingInfo(this.id);
     this.getPlList();

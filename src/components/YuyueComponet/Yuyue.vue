@@ -24,7 +24,11 @@
               class="yuyue-form"
             >
               <el-form-item label="预约婚礼" prop="hlId">
-                <el-select v-model="title" placeholder="请选择所预约的婚礼" :change="setPrice()">
+                <el-select
+                  v-model="title"
+                  placeholder="请选择所预约的婚礼"
+                  :change="setPrice()"
+                >
                   <el-option
                     v-for="item in hlOptions"
                     :key="item.id"
@@ -51,7 +55,7 @@
                   value-format="yyyy-MM-dd HH:mm:ss"
                 ></el-date-picker>
               </el-form-item>
-              
+
               <el-form-item label="电话" prop="tel">
                 <el-input v-model="ruleForm.tel"></el-input>
               </el-form-item>
@@ -88,7 +92,7 @@ export default {
   data() {
     return {
       ruleForm: {
-        hlId: '',
+        hlId: "",
         name: "",
         hunqi: "",
         tel: "",
@@ -107,43 +111,40 @@ export default {
       },
       // 婚礼列表
       hlOptions: [],
-      title: '',
+      title: "",
       price: 0,
     };
   },
 
   created() {
     // 获取婚礼列表
-    this.$axios
-      .get(`/getHlInfoList`)
-      .then((res) => {
-        if(res.data.code === '0'){
-          this.hlOptions = res.data.data;
-        }
-      })
+    this.$axios.get(`/getHlInfoList`).then((res) => {
+      if (res.data.code === "0") {
+        this.hlOptions = res.data.data;
+      }
+    });
   },
 
   methods: {
     // 设置订单价格
     setPrice() {
-      this.hlOptions.map(item => {
-        if(item.id === this.title) {
+      this.hlOptions.map((item) => {
+        if (item.id === this.title) {
           this.price = item.price;
         }
-      })
+      });
     },
 
     // 订单提交
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
-        // console.log(this.ruleForm.hunqi);
         if (valid) {
-          // let hunqiString = this.ruleForm.hunqi.toString();
           this.$axios
-            .post(`/insDdinfo?hlid=${this.title}&userid=${this.$store.state.user.id}&price=${this.price}&yydate=${this.ruleForm.hunqi}`)
+            .post(
+              `/insDdinfo?hlid=${this.title}&userid=${this.$store.state.user.id}&price=${this.price}&yydate=${this.ruleForm.hunqi}`
+            )
             .then((res) => {
-              if(res.data.code === '0') {
-                console.log(res.data.data);
+              if (res.data.code === "0") {
                 this.$message({
                   message: res.data.msg,
                   type: "success",
@@ -154,7 +155,7 @@ export default {
                   type: "warning",
                 });
               }
-            })
+            });
         } else {
           console.log("error submit!!");
           return false;

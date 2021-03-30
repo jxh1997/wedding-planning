@@ -83,7 +83,6 @@ export default {
 
   methods: {
     gotoDetail(id) {
-      console.log(id);
       // 路由跳转传参
       this.$router.push({
         path: "/choice/details", // 跳转的路径
@@ -99,12 +98,9 @@ export default {
     this.$axios
       .get(`/getHlInfoList`)
       .then((res) => {
-        console.log(res.data);
         if(res.data.code === '0'){
-          console.log("婚礼信息请求" , res.data.data);
           this.weddingContent = res.data.data;
         } else {
-          console.log(res.msg);
         }
       })
   }

@@ -24,36 +24,35 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="头像" prop="imgpath">
-          <el-avatar
-            shape="square"
-            :size="100"
-            :fit="fit"
-            :src="$store.state.user.baseUrl + infoRuleForm.imgpath"
-            class="info-input"
-          ></el-avatar>
+          <img
+            :src="$store.state.baseUrl + imgpath"
+            class="info-input head-img"
+          />
           <!-- 上传头像 -->
-          <el-button type="text"  @click="dialogFormVisibleHead = true">
+          <el-button type="text" @click="dialogFormVisibleHead = true">
             修改头像
           </el-button>
         </el-form-item>
-        <el-button type="primary" @click="saveInfo">
-          保存修改
-        </el-button>
       </el-form>
+      <el-button type="primary" @click="saveInfo"> 保存修改 </el-button>
     </div>
 
-
+    <!-- 头像上传 -->
     <el-dialog title="头像上传" :visible.sync="dialogFormVisibleHead">
       <el-upload
-        class="avatar-uploader"
         :action="baseUrl"
-        :show-file-list="false"
+        list-type="picture-card"
+        :on-preview="handlePictureCardPreview"
+        :on-remove="handleRemove"
         :on-success="handleAvatarSuccess"
-        :before-upload="beforeAvatarUpload"
       >
-        <img v-if="$store.state.user.imgpath" :src="$store.state.user.imgpath" class="avatar" />
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        <i class="el-icon-plus"></i>
       </el-upload>
+      <!-- 图片预览 -->
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="" />
+      </el-dialog>
+
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisibleHead = false">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisibleHead = false">
@@ -69,10 +68,9 @@ export default {
   data() {
     return {
       baseUrl: "/test/uploadfile",
-      infoRuleForm:{
+      infoRuleForm: {
         username: this.$store.state.user.username,
         nickname: this.$store.state.user.nickname,
-        imgpath:  this.$store.state.user.imgpath,
       },
       infoRules: {
         username: [
@@ -81,25 +79,70 @@ export default {
       },
       dialogFormVisibleHead: false, // 修改头像弹出
       dialogFormVisiblePass: false, // 修改密码弹出
+      dialogImageUrl: "",
+      dialogVisible: false,
     };
   },
   methods: {
-    // 图片上传
-    handleAvatarSuccess(res, file) {
-      this.$store.state.user.imgpath = URL.createObjectURL(file.raw);
+    // 文件列表移除文件时的钩子
+    handleRemove(file, fileList) {
     },
 
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    // 点击文件列表中已上传的文件时的钩子
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
 
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+    // 图片上传成功
+    handleAvatarSuccess(res) {
+      if (res.code === "0") {
+        // 修改 store中 imgpath 的路径
+        // this.saveHead(res.path);
+        this.$store.dispatch("uploadAvatar", res.path);
+
+        this.$message({
+          message: "头像上传成功",
+          type: "success",
+        });
+      } else {
+        this.$message({
+          message: res.msg,
+          type: "warning",
+        });
       }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+    },
+
+    // 头像上传
+    saveHead(path) {
+      this.$store.commit("uploadAvatar", path);
+    },
+
+    // 信息修改
+    saveInfo() {
+      this.$axios
+        .post(`/upUserinfo?id=${this.$store.state.user.id}&nickname=${this.infoRuleForm.nickname}&imgpath=${this.imgpath}`)
+        .then(res => {
+          if(res.data.code === '0') {
+            this.$message({
+              message: '修改成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+          }
+        })
+    },
+  },
+
+  // 计算属性
+  computed: {
+    imgpath(newVal, oldVal) {
+      // 因为要做修改 num 的值  所以放在 计算属性里
+      return this.$store.state.user.imgpath;
     },
   },
 };
@@ -118,6 +161,11 @@ export default {
 }
 .info-input {
   margin-left: 20px;
+}
+.head-img{
+  height: 100px;
+  width: 100px;
+  object-fit:cover;
 }
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;

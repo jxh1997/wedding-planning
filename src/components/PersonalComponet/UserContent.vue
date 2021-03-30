@@ -20,8 +20,9 @@ export default {
   width: 850px;
   height: 935px;
   margin-left: 20px;
-  overflow-y: auto;
   overflow: hidden;
+  overflow: auto;
+
 }
 .content-main {
   margin: 20px;

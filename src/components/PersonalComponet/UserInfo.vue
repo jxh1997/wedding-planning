@@ -3,12 +3,12 @@
 <template>
   <div class="info">
     <div class="portrait">
-      <img :src="$store.state.baseUrl + userInfo.head" width="80" height="80" />
+      <img :src="$store.state.baseUrl + imgpath" width="80" height="80" />
     </div>
 
     <div class="user-info">
-      <div class="nick" v-text="userInfo.name"></div>
-      <div class="uid" v-text="'ID:' + userInfo.uid"></div>
+      <div class="nick" v-text="this.$store.state.user.username"></div>
+      <div class="uid" v-text="'ID:' + this.$store.state.user.id"></div>
     </div>
   </div>
 </template>
@@ -18,12 +18,14 @@ export default {
   name: "UserInfo",
   data() {
     return {
-      userInfo: {
-        head: this.$store.state.user.imgpath,
-        name: this.$store.state.user.username,
-        uid: this.$store.state.user.id,
-      },
     };
+  },
+
+  // 计算属性
+  computed: {
+    imgpath() {
+      return this.$store.state.user.imgpath;
+    },
   },
 };
 </script>
