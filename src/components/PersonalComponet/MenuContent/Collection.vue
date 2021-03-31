@@ -2,6 +2,10 @@
   <div class="collection">
     <div class="collection-title">我的收藏列表</div>
     <div class="collection-list">
+      <div class="comments-none" v-if="my_collections.length === 0">
+        <img src="@/assets/images/icon/none.png" alt="" />
+        暂无收藏婚礼
+      </div>
       <el-row>
         <el-col
           :span="8"
@@ -35,16 +39,7 @@
 export default {
   data() {
     return {
-      my_collections: [
-        {
-          id: 1,
-          imgpath: [require("@/assets/images/wednews/news1.jpg")],
-          titletext: "伦敦时装周春夏| 2019 ...",
-          hlclass: "公证式结婚",
-          infotext:
-            "每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report)",
-        },
-      ],
+      my_collections: [],
     };
   },
 
@@ -55,16 +50,25 @@ export default {
   methods: {
     // 数据初始化
     init() {
+      // 刷新获取用户当前的数据
       this.$axios
-        .post(`/getScListInfo?sclist=${this.$store.state.user.sclist}`)
-        .then((res) => {
-          if (res.data.code === "0") {
-            this.my_collections = res.data.data;
-          } else {
-            this.$message({
-              message: res.data.msg,
-              type: "warning",
-            });
+        .get(`/getUserinfoById?id=${this.$store.state.user.id}`)
+        .then((userRes) => {
+          if (userRes.data.code === "0") {
+            let sclist = userRes.data.data.sclist;
+            // 获取当前用户的收藏列表
+            this.$axios
+              .post(`/getScListInfo?sclist=${sclist}`)
+              .then((scRes) => {
+                if (scRes.data.code === "0") {
+                  this.my_collections = scRes.data.data;
+                } else {
+                  this.$message({
+                    message: scRes.data.msg,
+                    type: "warning",
+                  });
+                }
+              });
           }
         });
     },
@@ -82,14 +86,14 @@ export default {
   },
 
   watch: {
-    "$route": {
+    $route: {
       handler(route) {
-        if(route.path == '/personal/collection') {
+        if (route.path == "/personal/collection") {
           this.init();
         }
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 
@@ -135,5 +139,16 @@ export default {
 
 .clearfix:after {
   clear: both;
+}
+/* 内容为空 */
+.comments-none {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 30px;
+  color: rgb(189, 186, 186);
 }
 </style>

@@ -76,8 +76,6 @@ export default {
             "等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不等了一周今晚又要继续撒糖了，开心~~~最新几期刘泽煊开始猛烈进攻，带她去赛车，教她功课，和她一起坐热气球，一句我们家宝宝疯不",
         },
       ],
-
-      
     };
   },
 
@@ -95,15 +93,12 @@ export default {
 
   created() {
     // 婚礼信息请求
-    this.$axios
-      .get(`/getHlInfoList`)
-      .then((res) => {
-        if(res.data.code === '0'){
-          this.weddingContent = res.data.data;
-        } else {
-        }
-      })
-  }
+    this.$axios.get(`/getHlInfoList`).then((res) => {
+      if (res.data.code === "0") {
+        this.weddingContent = res.data.data;
+      }
+    });
+  },
 };
 </script>
 

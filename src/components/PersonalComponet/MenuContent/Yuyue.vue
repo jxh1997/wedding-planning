@@ -3,35 +3,70 @@
     <div class="yuyue-title">我的预约</div>
     <div class="yuyue-list">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="未支付" name="weizhifu">
-          <el-card class="box-card" v-for="(dd, i) in DdinfoList0" :key="i">
+        <!-- 待确认 -->
+        <el-tab-pane label="待确认" name="daiqueren">
+          <el-card class="box-card" v-for="dd0 in DdinfoList0" :key="dd0.id">
+            <div slot="header" class="clearfix">
+              <span>预约内容</span>
+            </div>
+            <div class="text item">
+              <ul>
+                <li class="yuyue-list-item">
+                  <span> 创建时间： </span>
+                  <span>
+                    {{ dd0.createtime }}
+                  </span>
+                </li>
+                <li class="yuyue-list-item">
+                  <span> 婚礼价格： </span>
+                  <span> {{ dd0.price }} 元 </span>
+                </li>
+                <li class="yuyue-list-item">
+                  <span> 预约时间： </span>
+                  <span>
+                    {{ dd0.yydate }}
+                  </span>
+                </li>
+                <li class="yuyue-list-item">
+                  <span> 订单状态： </span>
+                  <span>
+                    {{
+                      dd0.tag === "1" ? "待管理员确认" : "状态异常，请联系客服"
+                    }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </el-card>
+        </el-tab-pane>
+
+        <!-- 待支付 -->
+        <el-tab-pane label="待支付" name="weizhifu">
+          <el-card class="box-card" v-for="dd1 in DdinfoList1" :key="dd1.id">
             <div slot="header" class="clearfix">
               <span>预约内容</span>
               <el-button
                 style="float: right; padding: 3px 0"
                 type="text"
-                @click="payment(dd.id)"
+                @click="dialog1 = true"
               >
                 完成支付
               </el-button>
 
-              <el-dialog
-                title="完成支付"
-                :visible.sync="dialogWeiZhifu"
-                width="30%"
-              >
+              <el-dialog title="完成支付" :visible.sync="dialog1" width="30%">
                 <div class="zhifu-dialog">
-                  <p>您本次预约的婚礼价格为{{ dd.price }}，请完成支付。</p>
-                  <p>本次订单需支付 {{ dd.price }} 元。</p>
+                  <p>您本次预约的婚礼价格为{{ dd1.price }}，请完成支付。</p>
+                  <p>本次订单需支付 {{ dd1.price }} 元。</p>
                   <p>确认无误后请点击“确定”完成支付。</p>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="cancelPay(dd.id)">取 消</el-button>
+                  <el-button @click="dialog1 = false">取 消</el-button>
                   <el-button
                     type="primary"
-                    @click="completelPay(dd.id, dd.price)"
-                    >确 定</el-button
+                    @click="completelPay(dd1.id, dd1.price)"
                   >
+                    确 定
+                  </el-button>
                 </span>
               </el-dialog>
             </div>
@@ -40,23 +75,23 @@
                 <li class="yuyue-list-item">
                   <span> 创建时间： </span>
                   <span>
-                    {{ dd.createtime }}
+                    {{ dd1.createtime }}
                   </span>
                 </li>
                 <li class="yuyue-list-item">
-                  <span> 价格： </span>
-                  <span> {{ dd.price }} 元 </span>
+                  <span> 婚礼价格： </span>
+                  <span> {{ dd1.price }} 元 </span>
                 </li>
                 <li class="yuyue-list-item">
                   <span> 预约时间： </span>
                   <span>
-                    {{ dd.yydate }}
+                    {{ dd1.yydate }}
                   </span>
                 </li>
                 <li class="yuyue-list-item">
                   <span> 订单状态： </span>
                   <span>
-                    {{ dd.tag === "1" ? "未支付" : "已支付" }}
+                    {{ dd1.tag === "3" ? "待支付" : "状态异常，请联系客服" }}
                   </span>
                 </li>
               </ul>
@@ -66,33 +101,25 @@
 
         <!-- 已支付 -->
         <el-tab-pane label="已支付" name="yizhifu">
-          <el-card
-            class="box-card"
-            v-for="(dd2, i) in DdinfoList1"
-            :key="i + a"
-          >
+          <el-card class="box-card" v-for="dd2 in DdinfoList2" :key="dd2.id">
             <div slot="header" class="clearfix">
               <span>预约内容</span>
               <el-button
                 style="float: right; padding: 3px 0"
                 type="text"
-                @click="YiZhifuPayment(dd2.id)"
+                @click="dialog2 = true"
               >
                 取消订单
               </el-button>
 
-              <el-dialog
-                title="完成支付"
-                :visible.sync="dialogYiZhifu"
-                width="30%"
-              >
+              <el-dialog title="完成支付" :visible.sync="dialog2" width="30%">
                 <div class="zhifu-dialog">
-                  <p>您本次预约的婚礼价格为{{ dd.price }}</p>
+                  <p>您本次预约的婚礼价格为{{ dd2.price }}</p>
                   <p>本次订单已支付 {{ dd2.price }} 元。</p>
                   <p>确认无误后请点击“退款”完成退款。</p>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="YizhifuCancelPay(dd2.id)">取 消</el-button>
+                  <el-button @click="dialog2 = false">取 消</el-button>
                   <el-button
                     type="primary"
                     @click="YizhifuCompletelPay(dd2.id)"
@@ -117,13 +144,48 @@
                 <li class="yuyue-list-item">
                   <span> 预约时间： </span>
                   <span>
-                    {{ dd.yydate }}
+                    {{ dd2.yydate }}
                   </span>
                 </li>
                 <li class="yuyue-list-item">
                   <span> 订单状态： </span>
                   <span>
-                    {{ dd.tag === "1" ? "未支付" : "已支付" }}
+                    {{ dd2.tag === "4" ? "已支付" : "状态异常，请联系客服" }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </el-card>
+        </el-tab-pane>
+
+        <!-- 已退款 -->
+        <el-tab-pane label="已退款" name="yituikuan">
+          <el-card class="box-card" v-for="dd3 in DdinfoList3" :key="dd3.id">
+            <div slot="header" class="clearfix">
+              <span>预约内容</span>
+            </div>
+            <div class="text item">
+              <ul>
+                <li class="yuyue-list-item">
+                  <span> 创建时间： </span>
+                  <span>
+                    {{ dd3.createtime }}
+                  </span>
+                </li>
+                <li class="yuyue-list-item">
+                  <span> 婚礼价格： </span>
+                  <span> {{ dd3.price }} 元 </span>
+                </li>
+                <li class="yuyue-list-item">
+                  <span> 预约时间： </span>
+                  <span>
+                    {{ dd3.yydate }}
+                  </span>
+                </li>
+                <li class="yuyue-list-item">
+                  <span> 订单状态： </span>
+                  <span>
+                    {{ dd3.tag === "5" ? "已退款" : "" }}
                   </span>
                 </li>
               </ul>
@@ -139,16 +201,28 @@
 export default {
   data() {
     return {
-      dialogYiZhifu: false, // 已支付弹窗
-      dialogWeiZhifu: false, // 未支付弹窗
+      dialog0: false, // 待确认弹窗
+      dialog1: false, // 未支付弹窗
+      dialog2: false, // 已支付弹窗
+      dialog3: false, // 已退款弹窗
+
       activeName: "weizhifu",
 
-      // 未支付
+      // 待确认
       DdinfoList0: [],
-
-      // 已支付订单
+      // 未支付
       DdinfoList1: [],
+      // 已支付订单
+      DdinfoList2: [],
+      // 退款订单
+      DdinfoList3: [],
     };
+
+    // tag === 1   =>  提交申请
+    // tag === 2   =>  后台管理员确认待支付
+    // tag === 3   =>  待支付
+    // tag === 4   =>  支付完成
+    // tag === 5   =>  退款
   },
 
   created() {
@@ -158,20 +232,34 @@ export default {
   methods: {
     // 初始化订单
     initOrder() {
+      // 清空数组
+      this.DdinfoList0 = [];
+      this.DdinfoList1 = [];
+      this.DdinfoList2 = [];
+      this.DdinfoList3 = [];
+
       this.$axios
         .get(`/getDdinfoList?userid=${this.$store.state.user.id}`)
         .then((res) => {
           if (res.data.code === "0") {
             let DdList = res.data.data;
+            console.log("DdList: ", DdList);
             DdList.map((item) => {
-              // tag === 1   => 未支付
-              if (item.tag == "1") {
+              // 待确认
+              if (item.tag === "1") {
                 this.DdinfoList0.push(item);
-                // this.getWeddingInfo(item.id);
-              } else if(item.tag == "2") {
-                console.log(item.tag);
-                // 已支付订单
-                this.DdinfoList1 = item;
+              }
+              // tag === 3   =>  待支付
+              if (item.tag === "3") {
+                this.DdinfoList1.push(item);
+              }
+              // tag === 4   =>  支付
+              if (item.tag === "4") {
+                this.DdinfoList2.push(item);
+              }
+              // tag === 5   =>  退款
+              if (item.tag === "5") {
+                this.DdinfoList3.push(item);
               }
             });
           } else {
@@ -183,72 +271,44 @@ export default {
         });
     },
 
-    // 通过婚礼id获取婚礼信息
-    // getWeddingInfo(id) {
-    //   this.$axios
-    //     .get(`/getHlinfoById?id=${id}`)
-    //     .then((res) => {
-    //       console.log(res);
-    //       if(res.data.data == id) {
-
-    //       }
-    //     })
-    // },
-
-    // 点击完成支付
-    payment(dd_id) {
-      this.dialogWeiZhifu = true;
-    },
-
-    // 取消订房
-    YiZhifuPayment(dd_id) {
-      this.dialogYiZhifu = true;
-    },
-
-    // 取消支付（未支付）
-    cancelPay(dd_id) {
-      this.$message({
-        message: "订单" + dd_id + "取消支付",
-        type: "warning",
-      });
-      this.dialogWeiZhifu = false;
-    },
-
     // 完成支付
     completelPay(dd_id, price) {
       this.$axios
-        .post(`/upDdinfo?id=${dd_id}&tag=2&price=${price}`)
+        .post(`/upDdinfo?id=${dd_id}&tag=4&price=${price}`)
         .then((res) => {
           if (res.data.code === "0") {
             this.$message({
-              message: "订单" + dd_id + "支付完成",
+              message: "订单支付完成",
               type: "success",
             });
-            this.dialogWeiZhifu = false;
+            this.dialog1 = false;
           } else {
             this.$message({
-              message: "订单" + dd_id + "支付失败",
+              message: "订单支付失败",
               type: "warning",
             });
           }
         });
     },
 
-    // 已支付
-    YizhifuCancelPay() {
-      this.$message({
-        message: "取消退款",
-        type: "warning",
-      });
-      this.dialogYiZhifu = false;
-    },
-
+    // 退款
     YizhifuCompletelPay(dd_id) {
-      this.$message({
-        message: "订单" + dd_id + "退款完成",
-        type: "success",
-      });
-      this.dialogYiZhifu = false;
+      this.$axios
+        .post(`/upDdinfo?id=${dd_id}&tag=5`)
+        .then((res) => {
+          if (res.data.code === "0") {
+            this.$message({
+              message: "订单退款完成",
+              type: "success",
+            });
+            this.dialog2 = false;
+          } else {
+            this.$message({
+              message: "订单退款失败",
+              type: "warning",
+            });
+          }
+        });
     },
   },
 
@@ -298,6 +358,7 @@ export default {
 
 .box-card {
   width: 480px;
+  margin-bottom: 20px;
 }
 .zhifu-dialog {
   line-height: 30px;

@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     // 文件列表移除文件时的钩子
-    handleRemove(file, fileList) {
+    handleRemove() {
     },
 
     // 点击文件列表中已上传的文件时的钩子
@@ -124,7 +124,7 @@ export default {
         .post(`/upUserinfo?id=${this.$store.state.user.id}&nickname=${this.infoRuleForm.nickname}&imgpath=${this.imgpath}`)
         .then(res => {
           if(res.data.code === '0') {
-            this.$message({
+            this.$message({  
               message: '修改成功',
               type: 'success'
             })
@@ -140,7 +140,7 @@ export default {
 
   // 计算属性
   computed: {
-    imgpath(newVal, oldVal) {
+    imgpath() {
       // 因为要做修改 num 的值  所以放在 计算属性里
       return this.$store.state.user.imgpath;
     },
