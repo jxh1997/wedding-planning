@@ -22,18 +22,17 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
+            <el-button type="primary" @click="getWeddingList">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
       <!-- 查询结束 -->
 
-      <!-- 婚礼类型  手风琴效果: 每次只能展开一个面板 -->
+      <!-- 婚礼类型 -->
       <div class="type-content">
-        <div v-if="resultType.length == 0">
+        <div v-if="weddingList.length == 0">
           <el-collapse
             v-model="activeNames"
-            @change="handleChange"
             v-for="(tp, index) in type"
             v-bind:key="index"
           >
@@ -45,20 +44,21 @@
           </el-collapse>
         </div>
         <div v-else>
-          <el-collapse
-            v-model="activeNames"
-            @change="handleChange"
-            v-for="(tp, index) in resultType"
-            v-bind:key="index"
-          >
-            <el-collapse-item :title="tp.type" :name="tp.t_id">
-              <div>{{ tp.desc }}</div>
-              <div>{{ tp.content }}</div>
-              <div>价格一般在: {{ tp.price }} 元左右。</div>
-            </el-collapse-item>
-          </el-collapse>
+          <!-- 查询的婚礼展示 -->
+          <div class="weddingList">
+            <ul class="news_cont">
+              <li v-for="(item, index) in weddingList" :key="index">
+                <a @click="gotoDetail(item.id)">
+                  <img :src="$store.state.baseUrl + item.imgpath" alt />
+                  <h4>{{ item.titletext }}</h4>
+                  <time>TIME: {{ item.createtime }}</time>
+                  <p>{{ item.infotext }}</p>
+                  <span>阅读全文></span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        
       </div>
     </div>
   </div>
@@ -144,38 +144,71 @@ export default {
         type: "",
         price: "asc",
       },
-      resultType: []
+      // resultType: [],
+      weddingList: [],
     };
   },
+
   methods: {
+
     // 查询表单内容
-    onSubmit() {
-      this.resultType = [];
-      let result = [];
-      let formInlineType = this.formInline.type;
+    getWeddingList() {
+      this.weddingList = [];
+      let formInlineType = this.formInline.type || "";
       let formInlinePrice = this.formInline.price;
-      for (var i = 0; i < this.type.length; i++) {
-          if (this.type[i].type.indexOf(formInlineType) >= 0) {
-            result.push(this.type[i])
+      console.log(formInlineType, formInlinePrice);
+      // 婚礼信息请求
+      this.$axios
+        .get(`/getHlInfoList?hlclass=${formInlineType}`)
+        .then((res) => {
+          if (res.data.code === "0") {
+            this.weddingList = res.data.data;
+            console.log(this.weddingList);
+            this.weddingList.sort(function(a,b) {
+              if(formInlinePrice == 'asc') {
+                // 升序：由低到高
+                return a.price - b.price
+              } else {
+                // 降序：由高到低
+                return b.price - a.price
+              }
+            })
           }
-      }
-
-      
-      result.sort(function(a,b) {
-        if(formInlinePrice == 'asc') {
-          // 升序：由低到高
-          return a.price - b.price
-        } else {
-          // 降序：由高到低
-          return b.price - a.price
-        }
-      })
-
-      this.resultType = result;
+        });
     },
 
-    // 折叠面板展开内容
-    handleChange() {}
+    gotoDetail(id) {
+      // 路由跳转传参
+      this.$router.push({
+        path: "/choice/details", // 跳转的路径
+        query: {
+          id: id,
+        },
+      });
+    },
+    // onSubmit() {
+    //   this.resultType = [];
+    //   let result = [];
+    //   let formInlineType = this.formInline.type;
+    //   let formInlinePrice = this.formInline.price;
+    //   for (var i = 0; i < this.type.length; i++) {
+    //       if (this.type[i].type.indexOf(formInlineType) >= 0) {
+    //         result.push(this.type[i])
+    //       }
+    //   }
+
+    //   result.sort(function(a,b) {
+    //     if(formInlinePrice == 'asc') {
+    //       // 升序：由低到高
+    //       return a.price - b.price
+    //     } else {
+    //       // 降序：由高到低
+    //       return b.price - a.price
+    //     }
+    //   })
+
+    //   this.resultType = result;
+    // },
   },
 };
 </script>
@@ -213,5 +246,54 @@ export default {
   background-color: #ffffff;
   padding: 20px;
   box-sizing: border-box;
+}
+.weddingList {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.news_cont {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.news_cont li {
+  width: 25%;
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  margin-right: -1px;
+}
+.news_cont li a {
+  display: block;
+  width: 86%;
+  margin: 25px 7%;
+  text-decoration: none;
+  color: #333;
+}
+.news_cont li a img {
+  width: 100%;
+}
+.news_cont li a h4 {
+  font-size: 14px;
+  color: #191919;
+  margin: 15px auto;
+}
+.news_cont li a time {
+  color: #bbb;
+  text-transform: uppercase;
+  font-size: 12px;
+  display: block;
+}
+.news_cont li a p {
+  font-size: 12px;
+  line-height: 20px;
+  color: #666;
+  margin: 10px auto 25px;
+  height: 60px;
+  overflow: hidden;
+}
+.news_cont li a span {
+  color: #b40007;
+  font-size: 12px;
 }
 </style>

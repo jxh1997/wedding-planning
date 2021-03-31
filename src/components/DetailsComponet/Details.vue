@@ -16,7 +16,11 @@
           <div class="collection-img">
             <img src="@/assets/images/icon/time.png" />
           </div>
-          <span class="dataShow-span">{{ dataShow.createtime.slice(0, 10) + " " + dataShow.createtime.slice(11, 19) }}</span>
+          <span class="dataShow-span">{{
+            dataShow.createtime.slice(0, 10) +
+            " " +
+            dataShow.createtime.slice(11, 19)
+          }}</span>
         </div>
 
         <!-- 评论数 -->
@@ -131,7 +135,7 @@
               class="button1"
             >
               提交
-              </el-button>
+            </el-button>
             <el-button @click="resetForm('ruleForm')" class="button2">
               重置
             </el-button>
@@ -164,30 +168,10 @@ export default {
       id: this.$route.query.id, // 当前的婚礼id
 
       // 展示的婚礼数据
-      dataShow: {
-        id: 1,
-        title: "伦敦时装周春夏| 2019 ...",
-        time: "TIME:2018/10/20",
-        comments: 3,
-        fabulous: 25,
-        desc:
-          "每一季潘通色彩研究所(Pantone Color Institute™)的团队都会制作潘通时装流行色趋势报告(PANTONE Fashion Color Trend Report)",
-        content: [
-          "说起波点，人们总是会联想起法式风情，但在刚刚结束的2019春夏伦敦时装周上，Erdem（左）、博柏利（Burberry）（中）和Ryan Lo（右）则展现了黑白波点的英伦风格。无论是黑纱黑点的复古裙装、白底黑点的干练半裙还是黑底白点的田园风格，都是设计师们对经典图案的现代演绎。",
-          "2019春夏伦敦时装周已经落下帷幕，Riccardo Tisci执掌的博柏利（Burberry）颇受好评，Victoria Beckham的十周年大秀不负众望，Anya Hindmarch的Chubby Cloud装置艺术更是时装周日程之外最热门的打卡之地。我们为你总结2019春夏伦敦时装周新鲜出炉的十大时尚趋势，为你提供新一季的穿搭灵感！",
-        ],
-      },
+      dataShow: {},
 
       // 评论
-      commentData: [
-        {
-          imgpath: require("@/assets/images/blog-writer.png"),
-          nickname: "John Doe",
-          textinfo:
-            "因为我最小的时候，我们中间有谁受了肉体的刺青，并且痛苦地死了，除非他能接受。",
-          fbtime: "2019/12/14 10:26",
-        },
-      ],
+      commentData: [],
 
       commentCount: 0, // 评论数
       FabulousCount: 0, // 点赞数
@@ -203,7 +187,7 @@ export default {
       isFabulous: false, // 是否点赞
     };
   },
-  
+
   created() {
     this.getWeddingInfo(this.id);
     this.getPlList();

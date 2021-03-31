@@ -3,7 +3,7 @@
     <!-- 首页轮播图 -->
     <el-carousel indicator-position="outside">
       <el-carousel-item v-for="img in images" :key="img">
-        <img :src="img" alt="">
+        <img :src="img" alt="" />
       </el-carousel-item>
     </el-carousel>
 
@@ -15,48 +15,41 @@
 
     <!-- 婚纱摄影 -->
     <wGraphy></wGraphy>
-
   </div>
 </template>
 
 <script>
-
 import wMenu from "@/components/MenuComponet/Menu";
 import wDress from "@/components/DressComponet/Dress";
 import wGraphy from "@/components/GraphyComponet/Graphy";
 
-
 export default {
-    components: {
-      wMenu,
-      wDress,
-      wGraphy
-    },
+  components: {
+    wMenu,
+    wDress,
+    wGraphy,
+  },
 
   data() {
     return {
       images: [
-        'https://img-blog.csdnimg.cn/20210323155637534.jpg',
-        'https://img-blog.csdnimg.cn/20210323155652593.jpg',
-        'https://img-blog.csdnimg.cn/20210323155702425.jpg',
-        'https://img-blog.csdnimg.cn/2021032315570893.jpg',
-      ]
-    }
+        "https://img-blog.csdnimg.cn/20210323155637534.jpg",
+        "https://img-blog.csdnimg.cn/20210323155652593.jpg",
+        "https://img-blog.csdnimg.cn/20210323155702425.jpg",
+        "https://img-blog.csdnimg.cn/2021032315570893.jpg",
+      ],
+    };
   },
   created() {
     // 轮播图请求
-    this.$axios
-      .get(`/getBannerInfoList`)
-      .then((res) => {
-        console.log(res.data);
-        if(res.code === '0'){
-          // this.$data.images = res.data;
-        } else {
-          console.log(res.msg);
-        }
-      })
-  }
-}
+    this.$axios.get(`/getBannerInfoList`).then((res) => {
+      console.log(res.data);
+      if (res.code === "0") {
+        // this.$data.images = res.data;
+      }
+    });
+  },
+};
 </script>
 
 <style>
