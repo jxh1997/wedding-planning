@@ -2,8 +2,8 @@
   <div>
     <!-- 首页轮播图 -->
     <el-carousel indicator-position="outside">
-      <el-carousel-item v-for="img in images" :key="img">
-        <img :src="img" alt="" />
+      <el-carousel-item v-for="(img, index) in bannerList" :key="index">
+        <img :src="$store.state.baseUrl + img.imgpath" />
       </el-carousel-item>
     </el-carousel>
 
@@ -32,20 +32,15 @@ export default {
 
   data() {
     return {
-      images: [
-        "https://img-blog.csdnimg.cn/20210323155637534.jpg",
-        "https://img-blog.csdnimg.cn/20210323155652593.jpg",
-        "https://img-blog.csdnimg.cn/20210323155702425.jpg",
-        "https://img-blog.csdnimg.cn/2021032315570893.jpg",
-      ],
+      bannerList: [],
     };
   },
   created() {
     // 轮播图请求
     this.$axios.get(`/getBannerInfoList`).then((res) => {
-      console.log(res.data);
       if (res.code === "0") {
-        // this.$data.images = res.data;
+        this.bannerList = res.data.data;
+        console.log(this.bannerList);
       }
     });
   },
