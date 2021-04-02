@@ -62,7 +62,6 @@
 
       <div class="text">
         <div class="text-img2"></div>
-
         <div class="text-content">
           <p class="text2">
             {{ dataShow.xqtext }}
@@ -189,7 +188,7 @@ export default {
   },
 
   created() {
-    this.getWeddingInfo(this.id);
+    this.getWeddingInfo();
     this.getPlList();
   },
 
@@ -200,16 +199,19 @@ export default {
     },
 
     // 根据婚礼Id,获取婚礼信息
-    getWeddingInfo(id) {
-      this.$axios.post(`/getHlinfoById?id=${id}`).then((res) => {
+    getWeddingInfo() {
+      this.$axios.post(`/getHlinfoById?id=${this.id}`).then((res) => {
         if (res.data.code === "0") {
           this.dataShow = res.data.data;
-          // 查询当前用户是否给当前婚礼点赞
-          let dzListArr;
+
+          // 点赞列表序号 == 当前婚礼的id
+          let dzListArr = [];
           let dzlist = res.data.data.dzlist || "";
           dzListArr = dzlist.split(",");
           this.FabulousCount = dzListArr.length;
 
+          console.log(dzListArr);
+          
           dzListArr.map((item) => {
             if (item == this.$store.state.user.id) {
               this.isFabulous = true;
@@ -217,6 +219,7 @@ export default {
               this.isFabulous = false;
             }
           });
+          
         } else {
           this.$message({
             message: res.data.msg,
@@ -278,11 +281,13 @@ export default {
               if (userRes.data.code === "0") {
                 // 获取用户昵称，头像
                 for (var i = 0; i < this.commentData.length; i++) {
-                  if (this.commentData[i].id === userRes.data.data.id) {
+                  if (this.commentData[i].userid === userRes.data.data.id) {
                     this.commentData[i].nickname = userRes.data.data.nickname;
                     this.commentData[i].imgpath = userRes.data.data.imgpath;
                   }
                 }
+                this.getWeddingInfo();
+
                 // 获取用户收藏列表
                 // 查询当前用户是否收藏该婚礼
                 let scListArr;

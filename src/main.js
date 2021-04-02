@@ -25,7 +25,7 @@ Vue.config.productionTip = false
 // beforeEach 函数中to 是要去 的页面 from 是从哪里还. next 是要执行的操作
 router.beforeEach((to, from, next ) => {
   if(to.meta.isAuthRequired && store.state.isLogin === false) {
-    return next('/signin')
+    next('/signin')
   } else {
     next()
   }

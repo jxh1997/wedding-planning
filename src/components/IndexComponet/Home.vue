@@ -15,13 +15,17 @@
 
     <!-- 婚纱摄影 -->
     <wGraphy></wGraphy>
+
+    
   </div>
+  
 </template>
 
 <script>
 import wMenu from "@/components/MenuComponet/Menu";
 import wDress from "@/components/DressComponet/Dress";
 import wGraphy from "@/components/GraphyComponet/Graphy";
+
 
 export default {
   components: {
@@ -38,9 +42,8 @@ export default {
   created() {
     // 轮播图请求
     this.$axios.get(`/getBannerInfoList`).then((res) => {
-      if (res.code === "0") {
+      if (res.data.code === "0") {
         this.bannerList = res.data.data;
-        console.log(this.bannerList);
       }
     });
   },

@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 // 存储cookie
 export function setCookie (userName) {
     const info = Object.entries(userName);  // 二维数组
-    console.log(info);
 
     for (let i = 0; i < info.length; i++) {
         Cookies.set(info[i][0] , info[i][1]);
@@ -18,6 +17,5 @@ export function setCookie (userName) {
 export function getCookie () {
     return {
         username: Cookies.get('username'),
-        
     }
 }

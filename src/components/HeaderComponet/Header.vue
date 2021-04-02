@@ -58,8 +58,8 @@
 export default {
   data() {
     return {
-      musicUrl:
-        "//music.163.com/outchain/player?type=2&id=27899008&auto=0&height=66",
+      musicUrl: "",
+        // "//music.163.com/outchain/player?type=2&id=27899008&auto=0&height=66",
       content: Object.freeze([
         { cn: "网站首页", en: "HOME", link: "/home" },
         { cn: "套餐选择", en: "CHOICE", link: "/choice" },
@@ -84,7 +84,7 @@ export default {
     // 音乐列表
     this.$axios.get(`/getMusicInfoList`).then((res) => {
       if (res.data.code === "0") {
-        this.$data.musicUrl = res.data[0].filepath;
+        this.musicUrl = res.data.data[0].filepath;
       } else {
         console.log(res.msg);
       }

@@ -282,6 +282,7 @@ export default {
               type: "success",
             });
             this.dialog1 = false;
+            this.initOrder();
           } else {
             this.$message({
               message: "订单支付失败",
@@ -302,6 +303,7 @@ export default {
               type: "success",
             });
             this.dialog2 = false;
+            this.initOrder();
           } else {
             this.$message({
               message: "订单退款失败",
