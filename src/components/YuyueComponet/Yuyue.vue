@@ -98,7 +98,9 @@ export default {
         tel: "",
       },
       rules: {
-        zsname: [{ required: true, message: "请输入您的姓名", trigger: "blur" }],
+        zsname: [
+          { required: true, message: "请输入您的姓名", trigger: "blur" },
+        ],
         hunqi: [
           {
             type: "string",
@@ -139,29 +141,34 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios
-            .post(
-              `/insDdinfo?hlid=${this.title}&userid=${this.$store.state.user.id}&zsname=${this.ruleForm.zsname}&tel=${this.ruleForm.tel}&price=${this.price}&yydate=${this.ruleForm.hunqi}`
-            )
-            .then((res) => {
-              if (res.data.code === "0") {
-                this.$message({
-                  message: "预约成功",
-                  type: "success",
-                });
-                // 清空预约内容
-                this.$refs[formName].resetFields();
-                this.ruleForm.zsname = '';
-                this.title = '';
-                 this.price = 0;
-
-              } else {
-                this.$message({
-                  message: res.data.msg,
-                  type: "warning",
-                });
-              }
-            });
+          // 判断手机号是否正确
+          if (!/^[1]([3-9])[0-9]{9}$/.test(this.ruleForm.tel)) {
+            alert("手机号码有误，请重填");
+            return false;
+          } else {
+            this.$axios
+              .post(
+                `/insDdinfo?hlid=${this.title}&userid=${this.$store.state.user.id}&zsname=${this.ruleForm.zsname}&tel=${this.ruleForm.tel}&price=${this.price}&yydate=${this.ruleForm.hunqi}`
+              )
+              .then((res) => {
+                if (res.data.code === "0") {
+                  this.$message({
+                    message: "预约成功",
+                    type: "success",
+                  });
+                  // 清空预约内容
+                  this.$refs[formName].resetFields();
+                  this.ruleForm.zsname = "";
+                  this.title = "";
+                  this.price = 0;
+                } else {
+                  this.$message({
+                    message: res.data.msg,
+                    type: "warning",
+                  });
+                }
+              });
+          }
         } else {
           console.log("error submit!!");
           return false;

@@ -17,9 +17,9 @@
             <img src="@/assets/images/icon/time.png" />
           </div>
           <span class="dataShow-span">{{
-            dataShow.createtime.slice(0, 10) +
+            (dataShow.createtime || "").slice(0, 10) +
             " " +
-            dataShow.createtime.slice(11, 19)
+            (dataShow.createtime || "").slice(11, 19)
           }}</span>
         </div>
 
@@ -190,6 +190,7 @@ export default {
   created() {
     this.getWeddingInfo();
     this.getPlList();
+    this.getScList();
   },
 
   methods: {
@@ -203,15 +204,11 @@ export default {
       this.$axios.post(`/getHlinfoById?id=${this.id}`).then((res) => {
         if (res.data.code === "0") {
           this.dataShow = res.data.data;
-
           // 点赞列表序号 == 当前婚礼的id
           let dzListArr = [];
           let dzlist = res.data.data.dzlist || "";
           dzListArr = dzlist.split(",");
           this.FabulousCount = dzListArr.length;
-
-          console.log(dzListArr);
-          
           dzListArr.map((item) => {
             if (item == this.$store.state.user.id) {
               this.isFabulous = true;
@@ -219,7 +216,6 @@ export default {
               this.isFabulous = false;
             }
           });
-          
         } else {
           this.$message({
             message: res.data.msg,
@@ -274,35 +270,37 @@ export default {
           this.commentData = [];
           this.commentData = res.data.data;
           this.commentCount = res.data.count;
-          // 请求用户信息
-          this.$axios
-            .get(`/getUserinfoById?id=${this.$store.state.user.id}`)
-            .then((userRes) => {
-              if (userRes.data.code === "0") {
-                // 获取用户昵称，头像
-                for (var i = 0; i < this.commentData.length; i++) {
-                  if (this.commentData[i].userid === userRes.data.data.id) {
-                    this.commentData[i].nickname = userRes.data.data.nickname;
-                    this.commentData[i].imgpath = userRes.data.data.imgpath;
+          this.commentData.map((item) => {
+            // 请求用户信息
+            this.$axios
+              .get(`/getUserinfoById?id=${item.userid}`)
+              .then((userRes) => {
+                if (userRes.data.code === "0") {
+                  // 获取用户昵称，头像
+                  for (var i = 0; i < this.commentData.length; i++) {
+                    if (this.commentData[i].userid === userRes.data.data.id) {
+                      this.commentData[i].nickname = userRes.data.data.nickname;
+                      this.commentData[i].imgpath = userRes.data.data.imgpath;
+                    }
                   }
+                  this.getWeddingInfo();
                 }
-                this.getWeddingInfo();
+              });
+          });
 
-                // 获取用户收藏列表
-                // 查询当前用户是否收藏该婚礼
-                let scListArr;
-                let sclist = userRes.data.data.sclist || "";
-                scListArr = sclist.split(",");
+          // .then(() => {
+          //   if (userRes.data.code === "0") {
+          //     // 获取用户昵称，头像
+          //     for (var i = 0; i < this.commentData.length; i++) {
+          //       if (this.commentData[i].userid === userRes.data.data.id) {
+          //         this.commentData[i].nickname = userRes.data.data.nickname;
+          //         this.commentData[i].imgpath = userRes.data.data.imgpath;
+          //       }
+          //     }
+          //     this.getWeddingInfo();
 
-                scListArr.map((item) => {
-                  if (item == this.id) {
-                    this.isCollection = true;
-                  } else {
-                    this.isCollection = false;
-                  }
-                });
-              }
-            });
+          //   }
+          // });
         } else {
           this.commentData = [];
         }
@@ -311,7 +309,7 @@ export default {
 
     // 点赞
     fabulous() {
-      this.$axios.post(`/dzaction?id=${this.id}`).then((dzRes) => {
+      this.$axios.get(`/dzaction?id=${this.id}`).then((dzRes) => {
         if (dzRes.data.code === "0") {
           this.isFabulous = !this.isFabulous;
           if (!this.isFabulous) {
@@ -337,6 +335,36 @@ export default {
           });
         }
       });
+    },
+
+    // 是否收藏
+    getScList() {
+      // 请求用户信息
+      this.$axios
+        .get(`/getUserinfoById?id=${this.$store.state.user.id}`)
+        .then((userRes) => {
+          console.log(userRes.data.data.sclist);
+          if (userRes.data.code === "0") {
+            // 获取用户收藏列表
+            // 查询当前用户是否收藏该婚礼
+            let scListArr;
+            let sclist = userRes.data.data.sclist || "";
+            scListArr = sclist.split(",");
+            scListArr.map((item) => {
+              switch(item) {
+                case this.id:
+                  this.isCollection = true;
+                  break;
+                default: break;
+              }
+              // if (item == this.id) {
+              //   this.isCollection = true;
+              // } else {
+              //   this.isCollection = false;
+              // }
+            });
+          }
+        });
     },
 
     // 收藏

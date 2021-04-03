@@ -17,5 +17,11 @@ export function setCookie (userName) {
 export function getCookie () {
     return {
         username: Cookies.get('username'),
+        dzlist: Cookies.get('dzlist'),
+        groupid: Cookies.get('groupid'),
+        id: Cookies.get('id'),
+        imgpath: Cookies.get('imgpath'),
+        nickname: Cookies.get('nickname'),
+        sclist: Cookies.get('sclist'),
     }
 }
