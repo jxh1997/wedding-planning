@@ -115,7 +115,7 @@ export default {
 
     // 头像上传
     saveHead(path) {
-      this.$store.commit("uploadAvatar", path);
+      this.$store.dispatch("uploadAvatar", path);
     },
 
     // 信息修改
@@ -128,6 +128,7 @@ export default {
               message: '修改成功',
               type: 'success'
             })
+            this.$store.dispatch("uploadNickname", this.infoRuleForm.nickname);
           } else {
             this.$message({
               message: res.data.msg,

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { getCookie, setCookie } from '../utils/cookies';
+import { getCookie, setCookie, reviseCookie } from '../utils/cookies';
 
 Vue.use(Vuex);
 
@@ -25,8 +25,14 @@ export default new Vuex.Store({
             state.isLogin = false;
           },
 
-        uploadAvatar(state, path) {
-            state.user.imgpath = path;
+        uploadAvatar(state, imgpath) {
+            state.user.imgpath = imgpath;
+            reviseCookie("imgpath", imgpath);
+        },
+
+        uploadNickname(state, nickname) {
+            state.user.nickname = nickname;
+            reviseCookie("nickname", nickname);
         },
 
 
@@ -42,6 +48,10 @@ export default new Vuex.Store({
         // 上传头像
         uploadAvatar({ commit }, path) {
             commit('uploadAvatar', path);
+        },
+        // 修改昵称
+        uploadNickname({ commit }, nickname) {
+            commit('uploadNickname', nickname);
         },
     },
 
